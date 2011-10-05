@@ -1,0 +1,25 @@
+From b2e52dbdf00eeced216aea8de3085b456747a4fd Mon Sep 17 00:00:00 2001
+From: Joachim Breitner <mail@joachim-breitner.de>
+Date: Wed, 25 May 2011 10:34:32 +0200
+Subject: Bug 625004: References cannot be mutable
+
+---
+ sfworks/common/Debug.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/sfworks/common/Debug.h b/sfworks/common/Debug.h
+index 43826e0..ba12941 100644
+--- a/sfworks/common/Debug.h
++++ b/sfworks/common/Debug.h
+@@ -173,7 +173,7 @@ protected:
+ private:
+     mutable unsigned int indent_;
+     mutable bool endl_was_last_;
+-    mutable std::ostream& os_;
++    std::ostream& os_;
+ };
+ 
+ class COMMON_DEBUG_EXPIMP DebugTrace : public DebugOutStream {
+-- 
+1.7.5.1
+

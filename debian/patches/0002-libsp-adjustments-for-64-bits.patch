@@ -1,0 +1,78 @@
+From 487689948057be3518596ceca5ca4f15590f970e Mon Sep 17 00:00:00 2001
+From: Joachim Breitner <mail@joachim-breitner.de>
+Date: Tue, 10 Nov 2009 15:58:04 +0100
+Subject: libsp adjustments for 64 bits
+
+---
+ 3rd/jade/libsp/parser_inst.cxx |   19 ++++++++-----------
+ 3rd/jade/libsp/parser_inst.m4  |    2 +-
+ 2 files changed, 9 insertions(+), 12 deletions(-)
+
+diff --git a/3rd/jade/libsp/parser_inst.cxx b/3rd/jade/libsp/parser_inst.cxx
+index 2fa1996..21a604f 100644
+--- a/3rd/jade/libsp/parser_inst.cxx
++++ b/3rd/jade/libsp/parser_inst.cxx
+@@ -13,9 +13,6 @@ namespace SP_NAMESPACE {
+ 
+ #ifdef SP_MANUAL_INST
+ 
+-#include "Attribute.h"
+-#include "Trie.h"
+-
+ #define SP_DEFINE_TEMPLATES
+ #include "Owner.h"
+ #include "CopyOwner.h"
+@@ -1328,28 +1325,28 @@ typedef Vector<LeafContentToken*> Dummy_95;
+ #endif
+ #endif
+ #ifdef __DECCXX
+-#pragma define_template Vector<size_t>
++#pragma define_template Vector<unsigned int>
+ #else
+ #ifdef __xlC__
+-#pragma define(Vector<size_t>)
++#pragma define(Vector<unsigned int>)
+ #else
+ #ifdef SP_ANSI_CLASS_INST
+-template class Vector<size_t>;
++template class Vector<unsigned int>;
+ #else
+-typedef Vector<size_t> Dummy_96;
++typedef Vector<unsigned int> Dummy_96;
+ #endif
+ #endif
+ #endif
+ #ifdef __DECCXX
+-#pragma define_template Vector<unsigned int>
++#pragma define_template Vector<unsigned long int>
+ #else
+ #ifdef __xlC__
+-#pragma define(Vector<unsigned int>)
++#pragma define(Vector<unsigned long int>)
+ #else
+ #ifdef SP_ANSI_CLASS_INST
+-// XX template class Vector<unsigned int>;
++template class Vector<unsigned long int>;
+ #else
+-typedef Vector<unsigned int> Dummy_97;
++typedef Vector<unsigned long int> Dummy_97;
+ #endif
+ #endif
+ #endif
+diff --git a/3rd/jade/libsp/parser_inst.m4 b/3rd/jade/libsp/parser_inst.m4
+index 9ade7b8..5535850 100644
+--- a/3rd/jade/libsp/parser_inst.m4
++++ b/3rd/jade/libsp/parser_inst.m4
+@@ -164,8 +164,8 @@ __instantiate(Vector<NamedResourceTable<Entity> >)
+ __instantiate(Vector<ContentModelAmbiguity>)
+ __instantiate(Vector<Transition>)
+ __instantiate(Vector<LeafContentToken*>)
+-__instantiate(Vector<size_t>)
+ __instantiate(Vector<unsigned int>)
++__instantiate(Vector<unsigned long int>)
+ 
+ __instantiate(NamedTable<Id>)
+ __instantiate(NamedTableIter<Id>)
+-- 
+1.7.5.1
+

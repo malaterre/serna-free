@@ -1,0 +1,51 @@
+From cd58c7e1ecf938e960ae3bf57e2c2e02e6bdc093 Mon Sep 17 00:00:00 2001
+From: Joachim Breitner <mail@joachim-breitner.de>
+Date: Tue, 13 Apr 2010 22:24:07 +0200
+Subject: Do not hide build output
+
+---
+ 3rd/checked_build.sh                    |    4 ++--
+ tools/buildsys/3rd/buildlog.t           |    2 +-
+ tools/buildsys/3rd/install-unix-rules.t |    2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/3rd/checked_build.sh b/3rd/checked_build.sh
+index 3ea3ddb..94fd0f0 100755
+--- a/3rd/checked_build.sh
++++ b/3rd/checked_build.sh
+@@ -5,8 +5,8 @@ DIRS=$1
+ 
+ for d in ${DIRS}; do
+     echo Building $d...
+-    (cd $d; make install > cbuild.log 2>&1) && continue
+-    echo Build failed, see $d/cbuild.log for details
++    (cd $d; make install) && continue
++    echo Build failed
+     exit 1
+ done
+ 
+diff --git a/tools/buildsys/3rd/buildlog.t b/tools/buildsys/3rd/buildlog.t
+index 1d645da..f2e97f5 100644
+--- a/tools/buildsys/3rd/buildlog.t
++++ b/tools/buildsys/3rd/buildlog.t
+@@ -8,6 +8,6 @@
+ #$}
+ #!
+ BUILD_LOGFILE = $(top_srcdir)#$ $text = $dir_sep."build.log";
+-BUILD_LOG     = > $(BUILD_LOGFILE) 2>&1 || (echo Build failed in $(top_builddir), see $(BUILD_LOGFILE) for details; exit 111)
++BUILD_LOG     = 
+ 
+ #$ EnableOutput() if (Project("BUILDLOG_T_INCLUDED")); Project("BUILDLOG_T_INCLUDED = 1")
+diff --git a/tools/buildsys/3rd/install-unix-rules.t b/tools/buildsys/3rd/install-unix-rules.t
+index 292d21a..f7d833e 100644
+--- a/tools/buildsys/3rd/install-unix-rules.t
++++ b/tools/buildsys/3rd/install-unix-rules.t
+@@ -4,4 +4,4 @@
+         else \
+ 	  [ -x $(top_srcdir)/install.sh ] && \
+ 	  $(top_srcdir)/install.sh $(INST_SRCDIR) $(THIRD_DIR) $(INST_RELDIR) $(VERSION) $(CONFIG); \
+-        fi >$(BUILD_LOG)
++        fi
+-- 
+1.7.5.1
+

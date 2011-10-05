@@ -1,0 +1,30 @@
+From 9c80bb76d83ed3a33bddfa908dfe8cc06073c1f4 Mon Sep 17 00:00:00 2001
+From: Joachim Breitner <mail@joachim-breitner.de>
+Date: Sun, 10 Jan 2010 21:50:15 +0100
+Subject: Hardcode /usr/lib/serna as DataDir
+
+---
+ serna/utils/impl/config_utils.cxx |    7 +------
+ 1 files changed, 1 insertions(+), 6 deletions(-)
+
+diff --git a/serna/utils/impl/config_utils.cxx b/serna/utils/impl/config_utils.cxx
+index c0c38cc..76c5cab 100644
+--- a/serna/utils/impl/config_utils.cxx
++++ b/serna/utils/impl/config_utils.cxx
+@@ -218,12 +218,7 @@ String get_data_dir()
+     if (!value.empty())
+         return value;
+ 
+-#ifdef _WIN32
+-    return cfg::get_win32_instdir(SERNA_DATA_DIR_PROPERTY).name();
+-#else
+-    PathName full_exe_path(FileUtils::argv0());
+-    return full_exe_path.dirname().dirname().name();
+-#endif
++    return String("/usr/lib/serna");
+ }
+ 
+ struct ParamDesc {
+-- 
+1.7.5.1
+

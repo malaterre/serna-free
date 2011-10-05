@@ -1,0 +1,81 @@
+From 606f6ff3911d2f6a0cb919c59ee1226ec82791de Mon Sep 17 00:00:00 2001
+From: Mathieu Malaterre <mathieu.malaterre@gmail.com>
+Date: Tue, 12 Apr 2011 09:11:11 +0200
+Subject: Revert patch 0018 with some modification
+
+---
+ serna/pyapi/common/SString.sip     |    2 +-
+ serna/sapi/common/SString.h        |    2 +-
+ serna/sapi/common/impl/SString.cxx |    2 +-
+ sfworks/common/FlexString.h        |    2 +-
+ sfworks/common/String.h            |    2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/serna/pyapi/common/SString.sip b/serna/pyapi/common/SString.sip
+index 354497c..98bcb43 100644
+--- a/serna/pyapi/common/SString.sip
++++ b/serna/pyapi/common/SString.sip
+@@ -179,7 +179,7 @@ using namespace SernaApi;
+ 
+ public:
+     typedef Char                value_type;
+-    typedef std::size_t         size_type;
++    typedef unsigned int        size_type;
+     typedef value_type&         reference;
+     typedef const value_type&   const_reference;
+     typedef value_type*         iterator;
+diff --git a/serna/sapi/common/SString.h b/serna/sapi/common/SString.h
+index 86085f4..38d3403 100644
+--- a/serna/sapi/common/SString.h
++++ b/serna/sapi/common/SString.h
+@@ -442,7 +442,7 @@ public:
+     // converts number to string
+     static SString  number(int, int base = 10);
+     // converts number to string
+-    static SString  number(size_type, int base = 10);
++    static SString  number(unsigned int, int base = 10);
+     // converts number to string
+     static SString  number(double, char f = 'g', int prec = 6);
+ 
+diff --git a/serna/sapi/common/impl/SString.cxx b/serna/sapi/common/impl/SString.cxx
+index 54f9979..089abc9 100644
+--- a/serna/sapi/common/impl/SString.cxx
++++ b/serna/sapi/common/impl/SString.cxx
+@@ -671,7 +671,7 @@ SString SString::number(int n, int base)
+     return Common::String::number(n, base);
+ }
+ 
+-SString SString::number(size_type n, int base)
++SString SString::number(unsigned int n, int base)
+ {
+     return Common::String::number(n, base);
+ }
+diff --git a/sfworks/common/FlexString.h b/sfworks/common/FlexString.h
+index d0cdc42..72d557c 100644
+--- a/sfworks/common/FlexString.h
++++ b/sfworks/common/FlexString.h
+@@ -71,7 +71,7 @@ public:
+     typedef typename traits_type::char_type value_type;
+     typedef A allocator_type;
+     typedef Storage storage_type;
+-    typedef size_t size_type;
++    typedef unsigned int size_type;
+     typedef typename A::difference_type difference_type;
+ 
+     typedef typename A::reference reference;
+diff --git a/sfworks/common/String.h b/sfworks/common/String.h
+index cff2542..7239f6d 100644
+--- a/sfworks/common/String.h
++++ b/sfworks/common/String.h
+@@ -183,7 +183,7 @@ public:
+     static String number(long, int base = 10);
+     static String number(unsigned long, int base = 10);
+     static String number(int, int base = 10);
+-    static String number(size_type, int base = 10);
++    static String number(unsigned int, int base = 10);
+     static String number(void*, int base = 10);
+     static String number(double, char f = 'g', int prec = 6);
+ 
+-- 
+1.7.5.1
+

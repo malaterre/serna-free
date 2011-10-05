@@ -1,0 +1,25 @@
+From e6fe832192178845a78db74cafad7e6e6603e6e0 Mon Sep 17 00:00:00 2001
+From: Joachim Breitner <mail@joachim-breitner.de>
+Date: Tue, 12 Jan 2010 20:08:37 +0100
+Subject: Refer to /usr/share/doc/serna in config-template
+
+---
+ serna/dist/config-template-dist.xml |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/serna/dist/config-template-dist.xml b/serna/dist/config-template-dist.xml
+index e47d42b..72f9007 100644
+--- a/serna/dist/config-template-dist.xml
++++ b/serna/dist/config-template-dist.xml
+@@ -13,7 +13,7 @@
+ <!DOCTYPE serna-config [
+    <!ENTITY config SYSTEM "config-template.ent">
+    <!ENTITY data-path "$DATA_DIR">
+-   <!ENTITY doc-path "$DATA_DIR/doc">
++   <!ENTITY doc-path "/usr/share/doc/serna">
+    <!ENTITY dita-ot-path "$DATA_DIR/plugins/dita/DITA-OT1.4">
+    <!ENTITY dita-ot-samples-path "plugins/dita/DITA-OT1.4/samples/hierarchy.ditamap">
+    <!ENTITY translations-path "$DATA_DIR/translations">
+-- 
+1.7.5.1
+

@@ -1,0 +1,52 @@
+From 8e85ccc155ac22bfa9b9bc5e8b246d8c6aace0fc Mon Sep 17 00:00:00 2001
+From: Joachim Breitner <mail@joachim-breitner.de>
+Date: Mon, 9 Nov 2009 11:47:44 +0100
+Subject: Change make to gmake
+
+---
+ 3rd/defaults.pro   |    2 +-
+ 3rd/qt/qt-unix.pro |    1 +
+ defaults.pro       |    2 +-
+ 3 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/3rd/defaults.pro b/3rd/defaults.pro
+index 70fc820..b82c42d 100644
+--- a/3rd/defaults.pro
++++ b/3rd/defaults.pro
+@@ -15,7 +15,7 @@ unix:TMAKE_RANLIB   = ranlib
+ unix:TMAKE_LIBS     *= -L/usr/local/lib
+ 
+ unix:PACKAGE_CONFIGURE  = ./configure
+-unix:MAKE               = gmake
++unix:MAKE               = make
+ 
+ static:UNIX_LIB_EXT     = .a
+ dynamic:UNIX_LIB_EXT    = .so
+diff --git a/3rd/qt/qt-unix.pro b/3rd/qt/qt-unix.pro
+index 94adc10..cf00f31 100644
+--- a/3rd/qt/qt-unix.pro
++++ b/3rd/qt/qt-unix.pro
+@@ -2,6 +2,7 @@
+ #
+ 
+ PACKAGE_CONFIGURE   = ./configure
++PACKAGE_MAKE        = make
+ PACKAGE_MAKEFILE    = Makefile
+ PACKAGE_MAKEFILEOPT = -f
+ PACKAGE_CLEANOPTS   = clean
+diff --git a/defaults.pro b/defaults.pro
+index 6e8fcc7..6297df9 100644
+--- a/defaults.pro
++++ b/defaults.pro
+@@ -56,7 +56,7 @@ linux:DEFINES *= __STDC_VERSION__=199901L
+ unix:TMAKE_RANLIB   = ranlib
+ unix:TMAKE_LIBS     *= -L/usr/local/lib
+ darwin:TMAKE_LIBS   -= -L/usr/local/lib
+-unix:MAKE            = gmake
++unix:MAKE            = make
+ unix:COPY            = cp
+ unix:BISON           = bison
+ unix:TMAKE_CXXFLAGS  += -g
+-- 
+1.7.5.1
+

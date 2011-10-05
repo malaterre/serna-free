@@ -1,0 +1,28 @@
+From 7871c96912ba4b914520b1e0364d0abf2dbc26bc Mon Sep 17 00:00:00 2001
+From: Joachim Breitner <mail@joachim-breitner.de>
+Date: Tue, 10 Nov 2009 17:34:10 +0100
+Subject: In find_package_by_files, return undef upon failure
+
+---
+ tools/buildsys/3rd/pkg-utils.t |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/tools/buildsys/3rd/pkg-utils.t b/tools/buildsys/3rd/pkg-utils.t
+index d94f1b0..383d3a7 100644
+--- a/tools/buildsys/3rd/pkg-utils.t
++++ b/tools/buildsys/3rd/pkg-utils.t
+@@ -96,9 +96,9 @@ sub find_package_by_files {
+     my ($header, $lib) = @_;
+     my $pkg = {};
+     my ($incdir, $incSubdir) = find_header($header);
+-    return $pkg unless $incdir;
++    return unless $incdir;
+     my ($libdir, $libSubdir) = find_library($lib);
+-    return $pkg unless $libdir;
++    return unless $libdir;
+     $incdir =~ s^/+^/^g;
+     $pkg->{"LFLAGS"} = "-L$libdir" unless $libdir eq '/usr/lib';
+     $pkg->{"LIBS"} = $lib;
+-- 
+1.7.5.1
+

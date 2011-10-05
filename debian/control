@@ -1,0 +1,77 @@
+Source: serna-free
+Section: text
+Priority: extra
+Maintainer: Joachim Breitner <nomeata@debian.org>
+DM-Upload-Allowed: yes
+Uploaders: Mathieu Malaterre <mathieu.malaterre@gmail.com>
+Build-Depends:
+ debhelper (>= 7.0.50~),
+ python,
+ doxygen,
+ xsltproc,
+ bison,
+ default-jre,
+ pkg-config,
+ qt4-qmake,
+ qt4-dev-tools,
+ python-sip-dev,
+ libqt4-assistant,
+ libx11-dev,
+ x11proto-core-dev,
+ libfreetype6-dev,
+ libxft-dev,
+ libxinerama-dev,
+ libxmu-dev,
+ libxml2-dev,
+ libxslt1-dev,
+ libqt4-dev,
+ libqscintilla2-dev (>= 2.4-5),
+ python-qt4-dev,
+ pyqt4-dev-tools,
+ libaspell-dev,
+ docbook-xsl (>= 1.75.2+dfsg-5),
+ libqtassistantclient-dev
+Build-Conflicts:
+ qt3-dev-tools
+Standards-Version: 3.9.1
+Homepage: http://www.syntext.com/products/serna-free/
+VCS-Git: git://git.debian.org/git/collab-maint/serna.git
+VCS-Browser: http://git.debian.org/?p=collab-maint/serna.git
+
+Package: serna
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+ ${perl:Depends},
+ ${python:Depends},
+ xsltproc,
+ docbook-xsl (>= 1.75.2+dfsg-5),
+ python-qt4,
+ ${sip:Depends},
+Recommends:
+ fop,
+Description: Graphical XML editor
+ Serna Free Open Source XML editor is an easy-to-use visual XML
+ application which requires virtually no technical experience from
+ technical writers to author XML documents.
+ . 
+ Serna Free Open Source XML editor hides all the complexities of the
+ underlying XML technology.
+ .
+ Serna Free XML editor employs XSLT and XSL-FO to render XML documents
+ in print-like appearance for fast and easy authoring.
+
+Package: serna-dbg
+Architecture: any
+Section: debug
+Priority: extra
+Depends:
+    serna (= ${binary:Version}),
+    ${misc:Depends}
+Description: debugging symbols for serna
+ Serna Free Open Source XML editor is an easy-to-use visual XML
+ application which requires virtually no technical experience from
+ technical writers to author XML documents.
+ .
+ This package contains the debugging symbols for serna.

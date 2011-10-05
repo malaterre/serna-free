@@ -1,0 +1,27 @@
+From 926c59aad8a6c0cd0f771a79afd2c4062a96211f Mon Sep 17 00:00:00 2001
+From: Mathieu Malaterre <mathieu.malaterre@gmail.com>
+Date: Wed, 27 Apr 2011 12:25:39 +0200
+Subject: Provide a compilation fix for gcc 4.5
+
+---
+ sfworks/common/RefCntStorage.h |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
+
+diff --git a/sfworks/common/RefCntStorage.h b/sfworks/common/RefCntStorage.h
+index 932ac5b..9164430 100644
+--- a/sfworks/common/RefCntStorage.h
++++ b/sfworks/common/RefCntStorage.h
+@@ -73,6 +73,10 @@ template<typename E> struct RefCntData : public COMMON_NS::RefCounted<> {
+         const size_type buf_offset((size_type)(intptr_t)&((RefCntData*)1)->buf_ - 1);
+         return ::operator new(buf_offset + capacity * sizeof(E));
+     }
++    void operator delete(void* p)
++    {
++        ::operator delete(p);
++    }
+     void operator delete(void* p, size_type)
+     {
+         ::operator delete(p);
+-- 
+1.7.5.1
+

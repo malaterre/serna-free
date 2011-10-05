@@ -1,0 +1,30 @@
+From e72975c309c67089e9574f20713d0be30175c59c Mon Sep 17 00:00:00 2001
+From: Joachim Breitner <mail@joachim-breitner.de>
+Date: Tue, 12 Jan 2010 11:44:39 +0100
+Subject: Remove __int__ method from SimpleWrappedObject
+
+Usually, there is something wrong when python code tries to tread an
+object as an int, especially if the pointer is passed back. Removing
+this method to see if it is actually needed.
+---
+ serna/pyapi/common/WrappedObject.sip |    4 ----
+ 1 files changed, 0 insertions(+), 4 deletions(-)
+
+diff --git a/serna/pyapi/common/WrappedObject.sip b/serna/pyapi/common/WrappedObject.sip
+index c6dd301..f9a5855 100644
+--- a/serna/pyapi/common/WrappedObject.sip
++++ b/serna/pyapi/common/WrappedObject.sip
+@@ -14,10 +14,6 @@ public:
+ %MethodCode
+         sipRes = !sipCpp->isNull();
+ %End
+-//    int __int__();
+-//%MethodCode
+-//        sipRes = (int)sipCpp->getRep();
+-//%End
+     bool operator==(const SimpleWrappedObject&) const;
+     bool operator!=(const SimpleWrappedObject&) const;
+ };
+-- 
+1.7.5.1
+

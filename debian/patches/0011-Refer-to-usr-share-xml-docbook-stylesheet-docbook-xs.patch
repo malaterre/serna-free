@@ -1,0 +1,486 @@
+From 104add506a88eeb60790e8fd1382bbcb1e2bc27b Mon Sep 17 00:00:00 2001
+From: Joachim Breitner <mail@joachim-breitner.de>
+Date: Tue, 12 Jan 2010 20:14:35 +0100
+Subject: Refer to /usr/share/xml/docbook/stylesheet/docbook-xsl in all
+ relevant places
+
+---
+ .../doc-dita/users_guide/docbook-stylesheet.xml    |    2 +-
+ serna/dist/doc-dita/users_guide/ug.dita            |    2 +-
+ serna/dist/plugins/docbook/dbk42.sdt               |    8 ++++----
+ serna/dist/plugins/docbook/dbk43.sdt               |    8 ++++----
+ serna/dist/plugins/docbook/dbk44.sdt               |    8 ++++----
+ serna/dist/plugins/docbook/dbk45.sdt               |    8 ++++----
+ serna/dist/plugins/docbook/dblite05.sdt            |    8 ++++----
+ serna/dist/plugins/docbook/dblite05htmlents.sdt    |    8 ++++----
+ serna/dist/plugins/docbook/dblite05noents.sdt      |    8 ++++----
+ serna/dist/plugins/docbook/docbook.ahpp            |    2 +-
+ serna/dist/plugins/docbook/mkhelp.sh               |    2 +-
+ .../plugins/docbook/publishing/DocbookPublisher.py |    2 +-
+ .../plugins/idealliance/conference-paper-1-3.sdt   |    8 ++++----
+ .../dist/plugins/idealliance/conference-paper.sdt  |    8 ++++----
+ serna/dist/plugins/idealliance/ide-alliance.ahpp   |    2 +-
+ .../idealliance/publishing/IDEAlliancePublisher.py |    9 +--------
+ serna/dist/utils/plugindoc-xsl/chunk.xsl           |    2 +-
+ serna/docutils/xsl/db-modified/chunk.xsl           |    4 ++--
+ 18 files changed, 46 insertions(+), 53 deletions(-)
+
+diff --git a/serna/dist/doc-dita/users_guide/docbook-stylesheet.xml b/serna/dist/doc-dita/users_guide/docbook-stylesheet.xml
+index 9817bdf..d62a7f8 100644
+--- a/serna/dist/doc-dita/users_guide/docbook-stylesheet.xml
++++ b/serna/dist/doc-dita/users_guide/docbook-stylesheet.xml
+@@ -10,7 +10,7 @@
+           <title>Document opened with the Serna Docbook stylesheet.</title>
+           <image href="document-opened-with-docbook-stylesheet.png" align="center" placement="break"/>
+         </fig></p>
+-      <p>Norman Walsh&apos;s Docbook stylesheet is located at: <filepath>sernaInstallationPath/xml/stylesheets/docbook-xsl-1.68.1</filepath>. Serna Docbook stylesheet is located at: <filepath>sernaInstallationPath/plugins/docbook/docbook-xsl-serna</filepath>.</p>
++      <p>Norman Walsh&apos;s Docbook stylesheet is located at: <filepath>/usr/share/xml/docbook/stylesheet/docbook-xsl</filepath>. Serna Docbook stylesheet is located at: <filepath>sernaInstallationPath/plugins/docbook/docbook-xsl-serna</filepath>.</p>
+       <p>Serna Docbook stylesheet may be parameterized very similarly to Norman Walsh&apos;s Stylesheet (see files at <filepath>sernaInstallationPath/plugins/docbook/docbook-xsl-serna</filepath>: <codeph>parameters.xsl</codeph> and <codeph>titlepage.templates.xsl</codeph> that is generated with <codeph>titlepage.generator.xsl</codeph> from <codeph>titlepage.templates.xml</codeph>).</p>
+     </section>
+   </body>
+diff --git a/serna/dist/doc-dita/users_guide/ug.dita b/serna/dist/doc-dita/users_guide/ug.dita
+index 8bee1c4..c8c436f 100644
+--- a/serna/dist/doc-dita/users_guide/ug.dita
++++ b/serna/dist/doc-dita/users_guide/ug.dita
+@@ -4296,7 +4296,7 @@
+       <title>Docbook Stylesheet</title>
+       <body>
+         <section>
+-          <p>The stylesheet is located at <codeph>sernaInstallationPath/xml/stylesheets/docbook-xsl-1.68.1</codeph>.</p>
++          <p>The stylesheet is located at <codeph>/usr/share/xml/docbook/stylesheet/docbook-xsl</codeph>.</p>
+           <p>Docbook is the most popular DTD for technical documentation. The Serna package includes  the Docbook XSL Stylesheet, which renders documents as closely as possible to <xref href="http://sourceforge.net/projects/docbook/" format="html">Norman Walsh&apos;s Docbook stylesheet</xref>.</p>
+           <p>The Serna Docbook stylesheet is based on the Norman Walsh stylesheet and modified in order to provide convenient WYSIWYG editing and optimal performance for dynamic execution.</p>
+           <p>It may be parameterized very similarly to Norman Walsh&apos;s Stylesheet (see files <codeph>parameters.xsl</codeph> and <codeph>titlepage.templates.xsl</codeph>, that is generated with <codeph>titlepage.generator.xsl</codeph> from <codeph>titlepage.templates.xml</codeph>).</p>
+diff --git a/serna/dist/plugins/docbook/dbk42.sdt b/serna/dist/plugins/docbook/dbk42.sdt
+index d50a3f8..8008e3b 100644
+--- a/serna/dist/plugins/docbook/dbk42.sdt
++++ b/serna/dist/plugins/docbook/dbk42.sdt
+@@ -25,28 +25,28 @@
+     <t:inscription>HTML (Single Chunk)</t:inscription>
+     <t:extension>htm</t:extension>
+     <t:script>runXslt</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/html/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/html/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>htmlMulti</t:name>
+     <t:inscription>HTML (Multiple Chunks)</t:inscription>
+     <t:extension>htm</t:extension>
+     <t:script>runXslt</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/html/chunk.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/html/chunk.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>pdfFop</t:name>
+     <t:inscription>PDF (with FOP)</t:inscription>
+     <t:extension>pdf</t:extension>
+     <t:script>runFop</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/fo/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>pdfXep</t:name>
+     <t:inscription>PDF (with XEP)</t:inscription>
+     <t:extension>pdf</t:extension>
+     <t:script>runXep</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/fo/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:load-plugins>TablePlugin</t:load-plugins>
+   <t:dtd-guess-string>DocBook XML V4.2</t:dtd-guess-string>
+diff --git a/serna/dist/plugins/docbook/dbk43.sdt b/serna/dist/plugins/docbook/dbk43.sdt
+index 65f593f..4c7f7d4 100644
+--- a/serna/dist/plugins/docbook/dbk43.sdt
++++ b/serna/dist/plugins/docbook/dbk43.sdt
+@@ -25,28 +25,28 @@
+     <t:inscription>HTML (Single Chunk)</t:inscription>
+     <t:extension>htm</t:extension>
+     <t:script>runXslt</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/html/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/html/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>htmlMulti</t:name>
+     <t:inscription>HTML (Multiple Chunks)</t:inscription>
+     <t:extension>htm</t:extension>
+     <t:script>runXslt</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/html/chunk.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/html/chunk.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>pdfFop</t:name>
+     <t:inscription>PDF (with FOP)</t:inscription>
+     <t:extension>pdf</t:extension>
+     <t:script>runFop</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/fo/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>pdfXep</t:name>
+     <t:inscription>PDF (with XEP)</t:inscription>
+     <t:extension>pdf</t:extension>
+     <t:script>runXep</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/fo/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:load-plugins>TablePlugin</t:load-plugins>
+   <t:template-showup-priority>10</t:template-showup-priority>
+diff --git a/serna/dist/plugins/docbook/dbk44.sdt b/serna/dist/plugins/docbook/dbk44.sdt
+index 5adf341..2cfa054 100644
+--- a/serna/dist/plugins/docbook/dbk44.sdt
++++ b/serna/dist/plugins/docbook/dbk44.sdt
+@@ -24,28 +24,28 @@
+     <t:inscription>HTML (Single Chunk)</t:inscription>
+     <t:extension>htm</t:extension>
+     <t:script>runXslt</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/html/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/html/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>htmlMulti</t:name>
+     <t:inscription>HTML (Multiple Chunks)</t:inscription>
+     <t:extension>htm</t:extension>
+     <t:script>runXslt</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/html/chunk.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/html/chunk.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>pdfFop</t:name>
+     <t:inscription>PDF (with FOP)</t:inscription>
+     <t:extension>pdf</t:extension>
+     <t:script>runFop</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/fo/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>pdfXep</t:name>
+     <t:inscription>PDF (with XEP)</t:inscription>
+     <t:extension>pdf</t:extension>
+     <t:script>runXep</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/fo/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:load-plugins>TablePlugin</t:load-plugins>
+   <t:template-showup-priority>10</t:template-showup-priority>
+diff --git a/serna/dist/plugins/docbook/dbk45.sdt b/serna/dist/plugins/docbook/dbk45.sdt
+index 5b6c5ab..31bb6c9 100644
+--- a/serna/dist/plugins/docbook/dbk45.sdt
++++ b/serna/dist/plugins/docbook/dbk45.sdt
+@@ -32,14 +32,14 @@
+     <t:inscription>HTML (Single Chunk)</t:inscription>
+     <t:extension>htm</t:extension>
+     <t:script>runXslt</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/html/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/html/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>htmlMulti</t:name>
+     <t:inscription>HTML (Multiple Chunks)</t:inscription>
+     <t:extension>htm</t:extension>
+     <t:script>runXslt</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/html/chunk.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/html/chunk.xsl</t:stylesheet>
+   </t:publish>
+ 
+   <t:publish>
+@@ -47,14 +47,14 @@
+     <t:inscription>PDF (with FOP)</t:inscription>
+     <t:extension>pdf</t:extension>
+     <t:script>runFop</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/fo/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>pdfXep</t:name>
+     <t:inscription>PDF (with XEP)</t:inscription>
+     <t:extension>pdf</t:extension>
+     <t:script>runXep</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/fo/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl</t:stylesheet>
+   </t:publish>
+ 
+   <t:root-elements>appendix article book.class chapter part section set reference</t:root-elements>
+diff --git a/serna/dist/plugins/docbook/dblite05.sdt b/serna/dist/plugins/docbook/dblite05.sdt
+index 0045cdb..300f230 100644
+--- a/serna/dist/plugins/docbook/dblite05.sdt
++++ b/serna/dist/plugins/docbook/dblite05.sdt
+@@ -24,28 +24,28 @@
+     <t:inscription>HTML (Single Chunk)</t:inscription>
+     <t:extension>htm</t:extension>
+     <t:script>runXslt</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/html/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/html/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>htmlMulti</t:name>
+     <t:inscription>HTML (Multiple Chunks)</t:inscription>
+     <t:extension>htm</t:extension>
+     <t:script>runXslt</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/html/chunk.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/html/chunk.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>pdfFop</t:name>
+     <t:inscription>PDF (with FOP)</t:inscription>
+     <t:extension>pdf</t:extension>
+     <t:script>runFop</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/fo/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>pdfXep</t:name>
+     <t:inscription>PDF (with XEP)</t:inscription>
+     <t:extension>pdf</t:extension>
+     <t:script>runXep</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/fo/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:dtd-guess-string>DBLite</t:dtd-guess-string>
+   <t:root-elements>appendix article book chapter part section set reference</t:root-elements>
+diff --git a/serna/dist/plugins/docbook/dblite05htmlents.sdt b/serna/dist/plugins/docbook/dblite05htmlents.sdt
+index 8a08cf4..2ba8732 100644
+--- a/serna/dist/plugins/docbook/dblite05htmlents.sdt
++++ b/serna/dist/plugins/docbook/dblite05htmlents.sdt
+@@ -23,28 +23,28 @@
+     <t:inscription>HTML (Single Chunk)</t:inscription>
+     <t:extension>htm</t:extension>
+     <t:script>runXslt</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/html/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/html/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>htmlMulti</t:name>
+     <t:inscription>HTML (Multiple Chunks)</t:inscription>
+     <t:extension>htm</t:extension>
+     <t:script>runXslt</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/html/chunk.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/html/chunk.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>pdfFop</t:name>
+     <t:inscription>PDF (with FOP)</t:inscription>
+     <t:extension>pdf</t:extension>
+     <t:script>runFop</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/fo/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>pdfXep</t:name>
+     <t:inscription>PDF (with XEP)</t:inscription>
+     <t:extension>pdf</t:extension>
+     <t:script>runXep</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/fo/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:dtd-guess-string>DBLite-htmlents</t:dtd-guess-string>
+   <t:root-elements>appendix article book chapter part section set reference</t:root-elements>
+diff --git a/serna/dist/plugins/docbook/dblite05noents.sdt b/serna/dist/plugins/docbook/dblite05noents.sdt
+index 59a315e..d694017 100644
+--- a/serna/dist/plugins/docbook/dblite05noents.sdt
++++ b/serna/dist/plugins/docbook/dblite05noents.sdt
+@@ -23,28 +23,28 @@
+     <t:inscription>HTML (Single Chunk)</t:inscription>
+     <t:extension>htm</t:extension>
+     <t:script>runXslt</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/html/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/html/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>htmlMulti</t:name>
+     <t:inscription>HTML (Multiple Chunks)</t:inscription>
+     <t:extension>htm</t:extension>
+     <t:script>runXslt</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/html/chunk.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/html/chunk.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>pdfFop</t:name>
+     <t:inscription>PDF (with FOP)</t:inscription>
+     <t:extension>pdf</t:extension>
+     <t:script>runFop</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/fo/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>pdfXep</t:name>
+     <t:inscription>PDF (with XEP)</t:inscription>
+     <t:extension>pdf</t:extension>
+     <t:script>runXep</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/fo/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:dtd-guess-string>DBLite-noents</t:dtd-guess-string>
+   <t:root-elements>appendix article book chapter part section set reference</t:root-elements>
+diff --git a/serna/dist/plugins/docbook/docbook.ahpp b/serna/dist/plugins/docbook/docbook.ahpp
+index 8d45f7a..a3d141c 100644
+--- a/serna/dist/plugins/docbook/docbook.ahpp
++++ b/serna/dist/plugins/docbook/docbook.ahpp
+@@ -1,5 +1,5 @@
+   <output-type>
+     <pdf>
+-      <stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/fo/docbook.xsl</stylesheet>
++      <stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl</stylesheet>
+     </pdf>
+   </output-type>
+diff --git a/serna/dist/plugins/docbook/mkhelp.sh b/serna/dist/plugins/docbook/mkhelp.sh
+index 21ae010..c4e2509 100755
+--- a/serna/dist/plugins/docbook/mkhelp.sh
++++ b/serna/dist/plugins/docbook/mkhelp.sh
+@@ -12,7 +12,7 @@ PKG_DIR=plugins/docbook/docbook-help
+ SERNA_DIR=/home/apg/se/src/apps/serna
+ DOCBOOK=$SERNA_DIR/dist/plugins/docbook/dbk42
+ XML_CATALOG_FILES=$DOCBOOK/dtd/catalog.xml export XML_CATALOG_FILES
+-DBKXSLDIR=$SERNA_DIR/../../../build/apps/serna/dist/doc/docbook-xsl-1.68.1
++DBKXSLDIR=/usr/share/xml/docbook/stylesheet/docbook-xsl
+ HTMLSTYLE=$DBKXSLDIR/html/docbook.xsl
+ XSLTPROC=$SERNA_DIR/../../../3rd/xsltproc/linux/xsltproc
+ TARGET_SEHELP=docbook.sehelp
+diff --git a/serna/dist/plugins/docbook/publishing/DocbookPublisher.py b/serna/dist/plugins/docbook/publishing/DocbookPublisher.py
+index f485812..f8719ac 100755
+--- a/serna/dist/plugins/docbook/publishing/DocbookPublisher.py
++++ b/serna/dist/plugins/docbook/publishing/DocbookPublisher.py
+@@ -64,7 +64,7 @@ class DocbookPublisherCreator(SimplePublisherCreator):
+             if dataDir:
+                 xslDir = os.path.join(dataDir, 'xml', 'stylesheets')
+ 
+-        xslDir = os.path.join(xslDir, 'docbook-xsl-1.68.1')
++        xslDir = "/usr/share/xml/docbook/stylesheet/docbook-xsl"
+ 
+         self.xslFoScript = os.path.join(xslDir, 'fo', 'docbook.xsl')
+         self.singleXsl = os.path.join(xslDir, 'html', 'docbook.xsl')
+diff --git a/serna/dist/plugins/idealliance/conference-paper-1-3.sdt b/serna/dist/plugins/idealliance/conference-paper-1-3.sdt
+index 2b9122d..82221aa 100644
+--- a/serna/dist/plugins/idealliance/conference-paper-1-3.sdt
++++ b/serna/dist/plugins/idealliance/conference-paper-1-3.sdt
+@@ -22,27 +22,27 @@
+     <t:inscription>PDF (with FOP)</t:inscription>
+     <t:extension>pdf</t:extension>
+     <t:script>runFop</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/fo/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>pdfXep</t:name>
+     <t:inscription>PDF (with XEP)</t:inscription>
+     <t:extension>pdf</t:extension>
+     <t:script>runXep</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/fo/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>htmlMulti</t:name>
+     <t:inscription>HTML (Multiple Chunks)</t:inscription>
+     <t:extension>htm</t:extension>
+     <t:script>runXslt</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/html/chunk.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/html/chunk.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>htmlSingle</t:name>
+     <t:inscription>HTML (Single Chunk)</t:inscription>
+     <t:extension>htm</t:extension>
+     <t:script>runXslt</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/html/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/html/docbook.xsl</t:stylesheet>
+   </t:publish>
+ </t:document-template>
+diff --git a/serna/dist/plugins/idealliance/conference-paper.sdt b/serna/dist/plugins/idealliance/conference-paper.sdt
+index 113482d..30f2825 100644
+--- a/serna/dist/plugins/idealliance/conference-paper.sdt
++++ b/serna/dist/plugins/idealliance/conference-paper.sdt
+@@ -21,28 +21,28 @@
+     <t:inscription>PDF (with FOP)</t:inscription>
+     <t:extension>pdf</t:extension>
+     <t:script>runFop</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/fo/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>pdfXep</t:name>
+     <t:inscription>PDF (with XEP)</t:inscription>
+     <t:extension>pdf</t:extension>
+     <t:script>runXep</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/fo/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>htmlMulti</t:name>
+     <t:inscription>HTML (Multiple Chunks)</t:inscription>
+     <t:extension>htm</t:extension>
+     <t:script>runXslt</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/html/chunk.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/html/chunk.xsl</t:stylesheet>
+   </t:publish>
+   <t:publish>
+     <t:name>htmlSingle</t:name>
+     <t:inscription>HTML (Single Chunk)</t:inscription>
+     <t:extension>htm</t:extension>
+     <t:script>runXslt</t:script>
+-    <t:stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/html/docbook.xsl</t:stylesheet>
++    <t:stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/html/docbook.xsl</t:stylesheet>
+   </t:publish>
+ </t:document-template>
+ 
+diff --git a/serna/dist/plugins/idealliance/ide-alliance.ahpp b/serna/dist/plugins/idealliance/ide-alliance.ahpp
+index 8d45f7a..a3d141c 100644
+--- a/serna/dist/plugins/idealliance/ide-alliance.ahpp
++++ b/serna/dist/plugins/idealliance/ide-alliance.ahpp
+@@ -1,5 +1,5 @@
+   <output-type>
+     <pdf>
+-      <stylesheet>$SERNA_STYLESHEETS/docbook-xsl-1.68.1/fo/docbook.xsl</stylesheet>
++      <stylesheet>/usr/share/xml/docbook/stylesheet/docbook-xsl/fo/docbook.xsl</stylesheet>
+     </pdf>
+   </output-type>
+diff --git a/serna/dist/plugins/idealliance/publishing/IDEAlliancePublisher.py b/serna/dist/plugins/idealliance/publishing/IDEAlliancePublisher.py
+index ba5be1d..5d4984e 100755
+--- a/serna/dist/plugins/idealliance/publishing/IDEAlliancePublisher.py
++++ b/serna/dist/plugins/idealliance/publishing/IDEAlliancePublisher.py
+@@ -83,14 +83,7 @@ class IDEAlliancePublisherCreator(SimplePublisherCreator):
+                 args.stylesheet = os.path.normpath(self.pluginDir + \
+                                                    '/gca/gca-xsl-serna/gca.xsl')
+             else:
+-                xslPropName = r'$SERNA_STYLESHEETS'
+-                dbDir = unicode(SernaConfig.resolveResource('', xslPropName, ''))
+-                if not os.path.exists(dbDir):
+-                    dataDir = os.environ.get(r'SERNA_DATA_DIR', None)
+-                    if dataDir:
+-                        dbDir = os.path.join(dbDir, 'xml', 'stylesheets')
+-
+-                dbDir = os.path.join(dbDir, 'docbook-xsl-1.68.1')
++                dbDir = "/usr/share/xml/docbook/stylesheet/docbook-xsl"
+ 
+                 args.stylesheet = os.path.normpath(dbDir + '/fo/docbook.xsl')
+                 args.singleXsl = os.path.normpath(dbDir + '/html/docbook.xsl')
+diff --git a/serna/dist/utils/plugindoc-xsl/chunk.xsl b/serna/dist/utils/plugindoc-xsl/chunk.xsl
+index cb92cee..fedeb96 100644
+--- a/serna/dist/utils/plugindoc-xsl/chunk.xsl
++++ b/serna/dist/utils/plugindoc-xsl/chunk.xsl
+@@ -3,7 +3,7 @@
+ 		version="1.0"
+                 exclude-result-prefixes="exsl">
+ 
+-<xsl:import href="../../xml/stylesheets/docbook-xsl-1.68.1/html/docbook.xsl"/>
++<xsl:import href="/usr/share/xml/docbook/stylesheet/docbook-xsl/html/docbook.xsl"/>
+ <xsl:import href="chunk-common.xsl"/>
+ 
+ <xsl:param name="onechunk" select="0"/>
+diff --git a/serna/docutils/xsl/db-modified/chunk.xsl b/serna/docutils/xsl/db-modified/chunk.xsl
+index b022b30..4c4e2d6 100644
+--- a/serna/docutils/xsl/db-modified/chunk.xsl
++++ b/serna/docutils/xsl/db-modified/chunk.xsl
+@@ -3,9 +3,9 @@
+ 		version="1.0"
+                 exclude-result-prefixes="exsl">
+ 
+-<xsl:import href="docbook-xsl-1.68.1/html/docbook.xsl"/>
++<xsl:import href="/usr/share/xml/docbook/stylesheet/docbook-xsl/html/docbook.xsl"/>
+ <xsl:import href="chunk-common.xsl"/>
+-<xsl:include href="docbook-xsl-1.68.1/html/manifest.xsl"/>
++<xsl:include href="/usr/share/xml/docbook/stylesheet/docbook-xsl/html/manifest.xsl"/>
+ 
+ <xsl:param name="onechunk" select="0"/>
+ <xsl:param name="refentry.separator" select="0"/>
+-- 
+1.7.5.1
+

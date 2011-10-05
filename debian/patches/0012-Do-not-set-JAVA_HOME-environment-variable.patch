@@ -1,0 +1,62 @@
+From ad14ddde7f4fa2c9c2929fa1c39207e2189d1c2d Mon Sep 17 00:00:00 2001
+From: Joachim Breitner <mail@joachim-breitner.de>
+Date: Thu, 28 Jan 2010 19:55:02 +0100
+Subject: Do not set JAVA_HOME environment variable
+
+On Debian, it is fine to just use the java binary from the user path.
+Therefore, do not set the JAVA_HOME environment variable.
+---
+ serna/core/qt/QtSerna.cxx                         |    9 ---------
+ serna/dist/config-template.ent                    |    1 -
+ serna/dist/plugins/publishing/PublishingPlugin.py |    3 ---
+ 3 files changed, 0 insertions(+), 13 deletions(-)
+
+diff --git a/serna/core/qt/QtSerna.cxx b/serna/core/qt/QtSerna.cxx
+index 4b6af57..c9a46d0 100644
+--- a/serna/core/qt/QtSerna.cxx
++++ b/serna/core/qt/QtSerna.cxx
+@@ -227,15 +227,6 @@ int Serna::exec(int& argc, char** argv)
+ 
+     PropertyNode* cfgRoot = config().root();
+ 
+-#if defined(_WIN32) || defined(linux) && (!defined(_DEBUG) || defined(NDEBUG))
+-    String javaHome(cfgRoot->getString(NOTR("vars/java_home")));
+-    if (javaHome.empty()) {
+-        javaHome.append(config().getDataDir());
+-        javaHome.append(1, PathName::DIR_SEP).append(NOTR("jre"));
+-    }
+-    set_env(from_latin1(NOTR("JAVA_HOME")), javaHome);
+-#endif
+-
+     const bool isActiveX = ax_serna().isStartedByCOM();
+     if (isActiveX)
+         config().root()->makeDescendant(NOTR("#is-ax"))->setBool(true);
+diff --git a/serna/dist/config-template.ent b/serna/dist/config-template.ent
+index 6237ebb..47137d2 100644
+--- a/serna/dist/config-template.ent
++++ b/serna/dist/config-template.ent
+@@ -2,7 +2,6 @@
+     <!-- Serna Variables. schemas and stylesheets may be a paths, delimited
+     by ';' in Windows and ':' in Unix. -->
+     <data_dir>$DATA_DIR</data_dir> 
+-    <java_home>$DATA_DIR/jre</java_home>
+     <schemas>&data-path;/xml/schemas</schemas>
+     <stylesheets>&data-path;/xml/stylesheets</stylesheets>
+     <templates>$DATA_DIR/xml/templates</templates>
+diff --git a/serna/dist/plugins/publishing/PublishingPlugin.py b/serna/dist/plugins/publishing/PublishingPlugin.py
+index 228415f..348425d 100755
+--- a/serna/dist/plugins/publishing/PublishingPlugin.py
++++ b/serna/dist/plugins/publishing/PublishingPlugin.py
+@@ -70,9 +70,6 @@ class PublishingPlugin(DocumentPlugin):
+         pp = self.pluginProperties()
+         self._pluginDir = unicode(pp.getProperty("resolved-path").getString())
+         self._dialog = None
+-        config_root = SernaConfig.root()
+-        java_home = config_root.getProperty("vars/java_home").getString()
+-        set_java_home(unicode(java_home))
+ 
+     def __str__(self):
+         return PLUGIN_ID
+-- 
+1.7.5.1
+

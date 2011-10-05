@@ -1,0 +1,107 @@
+serna-free (4.4.0.20111005-1) UNRELEASED; urgency=low
+
+  * Start working on serna 4.4
+
+ -- Mathieu Malaterre <mathieu.malaterre@gmail.com>  Wed, 05 Oct 2011 22:18:29 +0200
+
+serna-free (4.3.0.20110221-5) unstable; urgency=low
+
+  * Change Standard-Version to 3.9.2 (no change needed)
+  * Change openjdk-jre into default-jre for kfreebsd-*
+
+ -- Mathieu Malaterre <mathieu.malaterre@gmail.com>  Thu, 02 Jun 2011 18:51:18 +0200
+
+serna-free (4.3.0.20110221-4) unstable; urgency=low
+
+  * include <stddef> (Closes: #625004)
+
+ -- Joachim Breitner <nomeata@debian.org>  Wed, 25 May 2011 11:22:32 +0200
+
+serna-free (4.3.0.20110221-3) unstable; urgency=low
+
+  * Add new patch for non-x86 platform and integer size
+  * Provide a compilation fix for gcc 4.5. Closes: #618995
+
+ -- Mathieu Malaterre <mathieu.malaterre@gmail.com>  Sun, 10 Apr 2011 19:09:31 +0200
+
+serna-free (4.3.0.20110221-2) unstable; urgency=low
+
+  * Add B-D to libqtassistantclient-dev. Closes: #618204
+
+ -- Mathieu Malaterre <mathieu.malaterre@gmail.com>  Thu, 17 Mar 2011 14:42:29 +0100
+
+serna-free (4.3.0.20110221-1) unstable; urgency=low
+
+  * New upstream relese (Closes: #613981)
+  * Adding myself to Uploader
+  * Using new VCS: hg (bitbucket.org/syntext)
+  * Add new get-orig-source target
+
+ -- Mathieu Malaterre <mathieu.malaterre@gmail.com>  Mon, 21 Feb 2011 13:59:42 +0100
+
+serna-free (0.svn288-1) unstable; urgency=low
+
+  * New upstream release, 1 patch applied upstream.
+  * Do not hide build output
+  * Rebuilding removes dependencies on python2.5 
+
+ -- Joachim Breitner <nomeata@debian.org>  Mon, 27 Sep 2010 13:55:59 +0200
+
+serna-free (0.svn270-3) unstable; urgency=low
+
+  * Add Build-Conflicts on qt3-dev-tools, to avoid FTBFS
+  * Versioned dependency on docbook-xsl, for the
+    /usr/share/xml/docbook/stylesheet/docbook-xsl location.
+  * Closes: #569666: Build-dep on libqscintilla2-dev >= 2.4-5
+  * Build a serna-dbg package 
+
+ -- Joachim Breitner <nomeata@debian.org>  Sat, 06 Mar 2010 23:17:43 +0100
+
+serna-free (0.svn270-2) unstable; urgency=low
+
+  * Depend on python-sip-dev and use dh_sip 
+
+ -- Joachim Breitner <nomeata@debian.org>  Sun, 07 Feb 2010 22:40:43 +0100
+
+serna-free (0.svn270-1) unstable; urgency=low
+
+  * New upstream release. 22 patches applied upstream!
+  * Bump standards version, no change 
+
+ -- Joachim Breitner <nomeata@debian.org>  Fri, 05 Feb 2010 19:22:38 +0100
+
+serna-free (0.svn235-3) unstable; urgency=low
+
+  * Package recommends fop now, thx to Mathieu Malaterre for suggesting this
+    (Closes: #567162) 
+  * Fix PDF publishing by not setting JAVA_PATH to a non-existant directory.
+    (Closes: #567160)
+  * Do not compress machine-readable files in /usr/share/doc/serna
+  * Use assistant-qt4 instead of assistant 
+
+ -- Joachim Breitner <nomeata@debian.org>  Thu, 28 Jan 2010 21:09:28 +0100
+
+serna-free (0.svn235-2) unstable; urgency=low
+
+  * Added dependencies on python-qt4 and python-sip (Closes: #566987)
+  * Manually version dependency on python-sip (Closes: #566823)
+  * Add VCS-* headers 
+
+ -- Joachim Breitner <nomeata@debian.org>  Tue, 26 Jan 2010 22:00:21 +0100
+
+serna-free (0.svn235-1) unstable; urgency=low
+
+  * New upstream version
+    + QtSingleApplication now treated as a 3rd party component
+      Thus ship qtsingleapplication-2.6_1-opensource.tar.gz in debian/3rd
+  * Removed convenience copy of docbook-xsl-1.68.1.tar.bz2 from self-created
+    orig.tar.gz file (was already removed in my master branch)
+  * Ship AUTHORS file
+
+ -- Joachim Breitner <nomeata@debian.org>  Sun, 24 Jan 2010 00:24:44 +0100
+
+serna-free (0.svn139-1) unstable; urgency=low
+
+  * Initial release. (Closes: #535828)
+
+ -- Joachim Breitner <nomeata@debian.org>  Sun, 10 Jan 2010 16:51:08 +0100

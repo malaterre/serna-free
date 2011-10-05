@@ -1,0 +1,83 @@
+From 84e3a6d16b8005230feebad3fc2bbe49a2afaddb Mon Sep 17 00:00:00 2001
+From: Joachim Breitner <mail@joachim-breitner.de>
+Date: Tue, 12 Jan 2010 19:45:25 +0100
+Subject: Use system-wide xsltproc in scripts
+
+---
+ serna/dist/plugins/dita/map2htm.sh        |    2 +-
+ serna/dist/plugins/dita/map2htm_merged.sh |    4 ++--
+ serna/dist/plugins/dita/map2pdf_fop.sh    |    4 ++--
+ serna/dist/plugins/dita/map2pdf_xep.sh    |    4 ++--
+ serna/dist/utils/publishing/runXslt.sh    |    2 +-
+ 5 files changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/serna/dist/plugins/dita/map2htm.sh b/serna/dist/plugins/dita/map2htm.sh
+index 002222a..d20ddd8 100755
+--- a/serna/dist/plugins/dita/map2htm.sh
++++ b/serna/dist/plugins/dita/map2htm.sh
+@@ -4,7 +4,7 @@ if [[ "$OSTYPE" = darwin* ]]
+ then
+ $SERNA_DATA_DIR/MacOS/xsltproc --xinclude --param "FILEREF" "''" -o "$3" "$2" "$1"
+ else
+-$SERNA_DATA_DIR/bin/xsltproc --xinclude --param "FILEREF" "''" -o "$3" "$2" "$1"
++xsltproc --xinclude --param "FILEREF" "''" -o "$3" "$2" "$1"
+ fi
+ 
+ 
+diff --git a/serna/dist/plugins/dita/map2htm_merged.sh b/serna/dist/plugins/dita/map2htm_merged.sh
+index e77633f..b13c5dc 100755
+--- a/serna/dist/plugins/dita/map2htm_merged.sh
++++ b/serna/dist/plugins/dita/map2htm_merged.sh
+@@ -6,7 +6,7 @@ then
+ $SERNA_DATA_DIR/MacOS/xsltproc --xinclude -o $temp "$2/topicmerge.xsl" "$1"
+ $SERNA_DATA_DIR/MacOS/xsltproc --xinclude -o "$3" "$2/dita2html.xsl" $temp
+ else
+-$SERNA_DATA_DIR/bin/xsltproc --xinclude -o $temp "$2/topicmerge.xsl" "$1"
+-$SERNA_DATA_DIR/bin/xsltproc --xinclude -o "$3" "$2/dita2html.xsl" $temp
++xsltproc --xinclude -o $temp "$2/topicmerge.xsl" "$1"
++xsltproc --xinclude -o "$3" "$2/dita2html.xsl" $temp
+ fi
+ rm -f $temp
+diff --git a/serna/dist/plugins/dita/map2pdf_fop.sh b/serna/dist/plugins/dita/map2pdf_fop.sh
+index 7796ff7..63db52e 100755
+--- a/serna/dist/plugins/dita/map2pdf_fop.sh
++++ b/serna/dist/plugins/dita/map2pdf_fop.sh
+@@ -5,8 +5,8 @@ then
+ $SERNA_DATA_DIR/MacOS/xsltproc --xinclude -o "temp_serna_map.xml" "$2/topicmerge.xsl" "$1"
+ $SERNA_DATA_DIR/MacOS/xsltproc --xinclude -o "temp_serna_map.fo" "$2/dita2fo-shell.xsl" "temp_serna_map.xml"
+ else
+-$SERNA_DATA_DIR/bin/xsltproc --xinclude -o "temp_serna_map.xml" "$2/topicmerge.xsl" "$1"
+-$SERNA_DATA_DIR/bin/xsltproc --xinclude -o "temp_serna_map.fo" "$2/dita2fo-shell.xsl" "temp_serna_map.xml"
++xsltproc --xinclude -o "temp_serna_map.xml" "$2/topicmerge.xsl" "$1"
++xsltproc --xinclude -o "temp_serna_map.fo" "$2/dita2fo-shell.xsl" "temp_serna_map.xml"
+ fi
+ fop.sh -fo "temp_serna_map.fo" -pdf "$3"
+ rm temp_serna_map.xml
+diff --git a/serna/dist/plugins/dita/map2pdf_xep.sh b/serna/dist/plugins/dita/map2pdf_xep.sh
+index 64844d0..68a6ad2 100755
+--- a/serna/dist/plugins/dita/map2pdf_xep.sh
++++ b/serna/dist/plugins/dita/map2pdf_xep.sh
+@@ -5,8 +5,8 @@ then
+ $SERNA_DATA_DIR/MacOS/xsltproc --xinclude -o "temp_serna_map.xml" "$2/topicmerge.xsl" "$1"
+ $SERNA_DATA_DIR/MacOS/xsltproc --xinclude -o "temp_serna_map.fo" "$2/dita2fo-shell.xsl" "temp_serna_map.xml"
+ else
+-$SERNA_DATA_DIR/bin/xsltproc --xinclude -o "temp_serna_map.xml" "$2/topicmerge.xsl" "$1"
+-$SERNA_DATA_DIR/bin/xsltproc --xinclude -o "temp_serna_map.fo" "$2/dita2fo-shell.xsl" "temp_serna_map.xml"
++xsltproc --xinclude -o "temp_serna_map.xml" "$2/topicmerge.xsl" "$1"
++xsltproc --xinclude -o "temp_serna_map.fo" "$2/dita2fo-shell.xsl" "temp_serna_map.xml"
+ fi
+ xep.sh -fo "temp_serna_map.fo" -out "$3"
+ rm temp_serna_map.xml
+diff --git a/serna/dist/utils/publishing/runXslt.sh b/serna/dist/utils/publishing/runXslt.sh
+index 4086d47..7fc07df 100755
+--- a/serna/dist/utils/publishing/runXslt.sh
++++ b/serna/dist/utils/publishing/runXslt.sh
+@@ -1,4 +1,4 @@
+ #!/bin/sh -x
+ 
+-exec "$SERNA_DATA_DIR/bin/xsltproc" --xinclude -o \
++exec xsltproc --xinclude -o \
+     "$SERNA_OUTPUT_FILE" "$SERNA_XSL_STYLESHEET" "$SERNA_XML_SRCFULLPATH"
+-- 
+1.7.5.1
+

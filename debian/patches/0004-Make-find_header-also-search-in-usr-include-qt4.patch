@@ -1,0 +1,25 @@
+From 1fe99656c9557d824748fc0e9d05b7d05fc614d4 Mon Sep 17 00:00:00 2001
+From: Joachim Breitner <mail@joachim-breitner.de>
+Date: Tue, 10 Nov 2009 17:36:16 +0100
+Subject: Make find_header also search in /usr/include/qt4
+
+---
+ tools/buildsys/3rd/pkg-utils.t |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/tools/buildsys/3rd/pkg-utils.t b/tools/buildsys/3rd/pkg-utils.t
+index 383d3a7..2a77245 100644
+--- a/tools/buildsys/3rd/pkg-utils.t
++++ b/tools/buildsys/3rd/pkg-utils.t
+@@ -68,7 +68,7 @@ sub find_library {
+ 
+ sub find_header {
+     my ($header) = @_;
+-    my ($found, $fpath, $fdir) = find_file_in_path($header, '/usr/include');
++    my ($found, $fpath, $fdir) = find_file_in_path($header, '/usr/include', '/usr/include/qt4');
+     return ($fpath, $fdir);
+ }
+ 
+-- 
+1.7.5.1
+

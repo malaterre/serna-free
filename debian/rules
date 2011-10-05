@@ -1,0 +1,111 @@
+#!/usr/bin/make -f
+%:
+	dh $@
+
+override_dh_auto_configure:
+	# We do all in build. Why not?
+
+override_dh_auto_build:
+	# Put 3rd party packages where the serna build system expects them
+	mkdir -p 3rd/packages
+	( cd 3rd/packages; ln -sf ../../debian/3rd/* . )
+	
+	# Build/Prepare 3rd party packages
+	cd 3rd; ./configure syspkgonly && ./checked_build.sh
+	
+	# Build serna
+	cd build; ./configure syspkg && make
+
+	# Build Makefile.install
+	make -C build/serna/app/ -f GNUmakefile $(CURDIR)/build/serna/app/Makefile.install
+
+override_dh_auto_install:
+	mkdir -p debian/serna/usr/lib/serna
+	mkdir -p debian/serna/usr/share/doc/serna
+	mkdir -p debian/inst_prefix
+	ln -sf $(CURDIR)/debian/serna/usr/lib/serna debian/inst_prefix/serna-free-4.3
+	ln -sf $(CURDIR)/debian/serna/usr/share/doc/serna debian/serna/usr/lib/serna/doc
+	make -C build/serna/app/ -f Makefile.install \
+		inst_prefix=$(CURDIR)/debian/inst_prefix
+	rm debian/inst_prefix/serna-free-4.3
+	rm debian/serna/usr/lib/serna/doc
+	rmdir debian/inst_prefix
+	
+	mkdir -p debian/serna/usr/bin
+	mv debian/serna/usr/lib/serna/bin/serna.bin debian/serna/usr/bin/serna
+	rm -rf debian/serna/usr/lib/serna/bin
+	
+	# Remove unneeded and unwanted files
+	rm debian/serna/usr/lib/serna/config-template-orig.ent
+	rm debian/serna/usr/lib/serna/config-template-orig.xml
+	rm debian/serna/usr/lib/serna/LICENSE.GPL
+	rm debian/serna/usr/lib/serna/SP-COPYING
+	rm debian/serna/usr/lib/serna/plugins/dita/DITA-OT1.4/license.txt
+	rm debian/serna/usr/lib/serna/plugins/speller/ASPELL-COPYING
+	rm debian/serna/usr/lib/serna/plugins/speller/ASPELL-EN-COPYING
+	rm debian/serna/usr/lib/serna/plugins/tei/tei-xsl-serna/SR-COPYING
+	rm debian/serna/usr/lib/serna/plugins/docbook/docbook-xsl-serna/NW-COPYING
+	rm debian/serna/usr/lib/serna/plugins/dita/DITA-OT1.4/tools/ant/LICENSE.dom
+	rm debian/serna/usr/lib/serna/plugins/dita/DITA-OT1.4/tools/ant/LICENSE.sax
+	rm debian/serna/usr/lib/serna/plugins/dita/DITA-OT1.4/tools/ant/LICENSE.xerces
+
+override_dh_shlibdeps:
+	dh_shlibdeps -l/usr/lib/serna/lib
+
+override_dh_clean:
+	dh_clean
+	rm -f 3rd/packages/*
+	
+	cd 3rd; test ! -e Makefile || make clean
+	
+	cd build; test ! -e GNUmakefile || make clean
+	
+	# Above commands are far from complete
+	rm -rf build/serna build/sfworks/ build/GNUmakefile
+	find -name \*.pyc -delete
+	rm -f 3rd/Makefile
+	rm -f 3rd/*/Makefile 3rd/*/cbuild.log
+	rm -f   3rd/antlr/2.7.1/Makefile \
+		3rd/aspell/0.50.5/Makefile \
+		3rd/dita-ot/1.4/Makefile \
+		3rd/docbook/1.68.1/Makefile \
+		3rd/doxygen/1.5.1/Makefile \
+		3rd/iconv/1.11/Makefile \
+		3rd/jdk/1.6.0/Makefile \
+		3rd/libxml/2.6.27/Makefile \
+		3rd/pyqt/4.5.4/Makefile \
+		3rd/python/2.6.2/Makefile \
+		3rd/qscintilla/2.4/Makefile \
+		3rd/qt/4.5.3/Makefile \
+		3rd/qtpropertybrowser/2.5/Makefile \
+		3rd/sip/4.8.2/Makefile \
+		3rd/xsltproc/1.1.19/Makefile \
+		3rd/qtsingleapplication/2.6_1/Makefile
+	rm -f	3rd/antlr/configure.log \
+		3rd/antlr/2.7.1/.configure_options \
+		3rd/qtsingleapplication/2.6_1/.configure_options
+	rm -f	3rd/qtsingleapplication/2.6_1/custom.pri \
+		3rd/qtsingleapplication/configure.log \
+		3rd/qtsingleapplication/include
+	rm -f 3rd/antlr/antlr
+	rm -rf 3rd/antlr/include 3rd/antlr/lib 3rd/bin 3rd/lib
+	rm -f 3rd/dita-ot/dita-dir-catalog.xml 3rd/dita-ot/dita-dir.ent
+	rm -f 3rd/pyqt/MANIFEST 3rd/python/MANIFEST 3rd/docbook/MANIFEST
+	rm -f 3rd/qtpropertybrowser/2.5/.configure_options 3rd/qtpropertybrowser/2.5/custom.pri
+	rm -f 3rd/qtpropertybrowser/configure.log 3rd/qtpropertybrowser/include
+	rm -f serna/dist/bin/xsltproc
+	rm -f serna/dist/doc-dita/version.xml
+
+override_dh_makeshlibs:
+	# We do not have any public shared libraries
+	# But run dh_sip around here
+	dh_sip
+
+override_dh_compress:
+	dh_compress -Xserna.qch -Xserna.qhc -Xserna.adp -X.xml
+
+override_dh_strip:
+	dh_strip --dbg-package=serna-dbg
+
+get-orig-source:
+	./debian/get-orig-source.sh

@@ -1,0 +1,43 @@
+From cf92c6ff6be1610ba503750e3634b46136c59b7f Mon Sep 17 00:00:00 2001
+From: Mathieu Malaterre <mathieu.malaterre@gmail.com>
+Date: Sun, 10 Apr 2011 19:07:11 +0200
+Subject: Improve typdefs for integer on non x86 platform
+
+---
+ sfworks/common/machdep/i386-g++/types.h |   18 +++++++++---------
+ 1 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/sfworks/common/machdep/i386-g++/types.h b/sfworks/common/machdep/i386-g++/types.h
+index 92ea685..e199dd4 100644
+--- a/sfworks/common/machdep/i386-g++/types.h
++++ b/sfworks/common/machdep/i386-g++/types.h
+@@ -33,16 +33,16 @@
+ #define MACHDEP_I386_GNUC_TYPES_H_
+ 
+ #include "common/common_defs.h"
+-
+-
+-typedef char           int8;
+-typedef unsigned char  uint8;
+-typedef short          int16;
+-typedef unsigned short uint16;
+-typedef long            int32;
+-typedef unsigned long   uint32;
+-typedef long long      int64;
+-typedef unsigned long long uint64;
++#include <stdint.h>
++
++typedef int8_t int8;
++typedef uint8_t uint8;
++typedef int16_t int16;
++typedef uint16_t uint16;
++typedef int32_t int32;
++typedef uint32_t uint32;
++typedef int64_t int64;
++typedef uint64_t uint64;
+ 
+ #define UINT64_VALUE(x) x##ULL
+ #define INT64_VALUE(x)  x##LL
+-- 
+1.7.5.1
+
