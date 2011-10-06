@@ -27,4 +27,5 @@ wget -c http://downloads.syntext.com/serna/opensource/3rd/qt-all-opensource-src-
 wget -c http://downloads.syntext.com/serna/opensource/3rd/qtpropertybrowser-2.5-opensource.tar.gz
 wget -c http://downloads.syntext.com/serna/opensource/3rd/sip-4.8.2.tar.gz
 wget -O hunspell-bin-1.3.tgz -c http://sourceforge.net/projects/hunspell/files/Hunspell/1.3.2/hunspell-1.3.2.tar.gz
+wget -c http://ftp.heanet.ie/mirrors/ftp.trolltech.com/pub/qt/solutions/lgpl/qtsingleapplication-2.6_1-opensource.tar.gz
 cd ../..
