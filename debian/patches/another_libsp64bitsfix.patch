@@ -1,0 +1,61 @@
+Description: Upstream changes introduced in version 4.4.0.20111005-1
+ This patch has been created by dpkg-source during the package build.
+ Here's the last changelog entry, hopefully it gives details on why
+ those changes were made:
+ .
+ serna-free (4.4.0.20111005-1) UNRELEASED; urgency=low
+ .
+   * Start working on serna 4.4
+ .
+ The person named in the Author field signed this changelog entry.
+Author: Mathieu Malaterre <mathieu.malaterre@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- serna-free-4.4.0.20111005.orig/3rd/jade/libsp/parser_inst.cxx
++++ serna-free-4.4.0.20111005/3rd/jade/libsp/parser_inst.cxx
+@@ -13,9 +13,6 @@ namespace SP_NAMESPACE {
+ 
+ #ifdef SP_MANUAL_INST
+ 
+-#include "Attribute.h"
+-#include "Trie.h"
+-
+ #define SP_DEFINE_TEMPLATES
+ #include "Owner.h"
+ #include "CopyOwner.h"
+@@ -1340,6 +1337,8 @@ typedef Vector<size_t> Dummy_96;
+ #endif
+ #endif
+ #endif
++ // we really just want to test if size_t == unsigned int
++#if !defined(SIZEOF_SIZE_T) || !defined(SIZEOF_UNSIGNED_INT) || (SIZEOF_SIZE_T != SIZEOF_UNSIGNED_INT)
+ #ifdef __DECCXX
+ #pragma define_template Vector<unsigned int>
+ #else
+@@ -1347,12 +1346,13 @@ typedef Vector<size_t> Dummy_96;
+ #pragma define(Vector<unsigned int>)
+ #else
+ #ifdef SP_ANSI_CLASS_INST
+-// XX template class Vector<unsigned int>;
++template class Vector<unsigned int>;
+ #else
+ typedef Vector<unsigned int> Dummy_97;
+ #endif
+ #endif
+ #endif
++#endif
+ 
+ #ifdef __DECCXX
+ #pragma define_template NamedTable<Id>

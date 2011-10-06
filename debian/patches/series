@@ -20,3 +20,4 @@
 #0020-Provide-a-compilation-fix-for-gcc-4.5.patch
 #0021-Bug-625004-References-cannot-be-mutable.patch
 #0022-Close-625004-include-cstddef.patch
+another_libsp64bitsfix.patch
