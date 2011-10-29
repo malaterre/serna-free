@@ -23,9 +23,11 @@ Forwarded: <no|not-needed|url proving that it has been forwarded>
 Reviewed-By: <name and email of someone who approved the patch>
 Last-Update: <YYYY-MM-DD>
 
---- serna-free-4.4.0.20111005.orig/serna/app/Makefile.pro
-+++ serna-free-4.4.0.20111005/serna/app/Makefile.pro
-@@ -125,6 +129,8 @@ release:LIBS =  \
+Index: serna-free-4-4/serna/app/Makefile.pro
+===================================================================
+--- serna-free-4-4.orig/serna/app/Makefile.pro	2011-10-29 17:21:11.000000000 +0200
++++ serna-free-4-4/serna/app/Makefile.pro	2011-10-29 17:27:05.000000000 +0200
+@@ -125,6 +125,8 @@
  
  unix:LIBS    += $$RTLIBS
  
@@ -34,20 +36,26 @@ Last-Update: <YYYY-MM-DD>
  SOURCES_PATTERN *= .cxx$
  win32:SOURCES_PATTERN *= win32/\.cxx$
  
---- serna-free-4.4.0.20111005.orig/serna/app/MANIFEST.speller
-+++ serna-free-4.4.0.20111005/serna/app/MANIFEST.speller
-@@ -2,7 +2,7 @@
+Index: serna-free-4-4/serna/app/MANIFEST.speller
+===================================================================
+--- serna-free-4-4.orig/serna/app/MANIFEST.speller	2011-10-29 17:21:11.000000000 +0200
++++ serna-free-4-4/serna/app/MANIFEST.speller	2011-10-29 17:27:27.000000000 +0200
+@@ -1,8 +1,8 @@
+ #
  # Files which are required for speller plugin
  #
- include:${THIRD_DIR}/aspell/MANIFEST
+-include:${THIRD_DIR}/aspell/MANIFEST
 -include:${THIRD_DIR}/hunspell/MANIFEST
++#include:${THIRD_DIR}/aspell/MANIFEST
 +#include:${THIRD_DIR}/hunspell/MANIFEST
  
  [all]
  
---- serna-free-4.4.0.20111005.orig/serna/dll/Makefile.pro
-+++ serna-free-4.4.0.20111005/serna/dll/Makefile.pro
-@@ -42,7 +42,7 @@ win32:SYS_LIBS += \
+Index: serna-free-4-4/serna/dll/Makefile.pro
+===================================================================
+--- serna-free-4-4.orig/serna/dll/Makefile.pro	2011-10-29 17:21:15.000000000 +0200
++++ serna-free-4-4/serna/dll/Makefile.pro	2011-10-29 17:27:05.000000000 +0200
+@@ -42,7 +42,7 @@
                    msvcrt$$LIBDBG.lib \
                    advapi32.lib gdi32.lib shell32.lib ole32.lib oleaut32.lib
  
@@ -56,9 +64,11 @@ Last-Update: <YYYY-MM-DD>
  linux:SYS_LIBS  = -ldl -lutil
  
  win32:LINK_FLAGS = -nologo -out:$@ -dll $$W32_LINK_FLAGS
---- serna-free-4.4.0.20111005.orig/serna/core/Makefile.pro
-+++ serna-free-4.4.0.20111005/serna/core/Makefile.pro
-@@ -68,6 +68,6 @@ UI_DIRS	       = $$srcdir/qt
+Index: serna-free-4-4/serna/core/Makefile.pro
+===================================================================
+--- serna-free-4-4.orig/serna/core/Makefile.pro	2011-10-29 17:21:11.000000000 +0200
++++ serna-free-4-4/serna/core/Makefile.pro	2011-10-29 17:27:05.000000000 +0200
+@@ -68,6 +68,6 @@
  ui_PATTERN      = $$UI_DIRS/.*\.ui$
  ALL_DEPS += $(msg_h) core_resource_data.cpp
  
@@ -66,9 +76,11 @@ Last-Update: <YYYY-MM-DD>
 +USE            = QtCore QtGui QtNetwork Qt3Support qtsingleapplication qscintilla
  
  EXTRA_TEMPLATES = genlist resource2cxx
---- serna-free-4.4.0.20111005.orig/serna/plugins/speller/Makefile.pro
-+++ serna-free-4.4.0.20111005/serna/plugins/speller/Makefile.pro
-@@ -37,6 +37,7 @@ debug:LIBS +=   $(CLIB_LIB)/common \
+Index: serna-free-4-4/serna/plugins/speller/Makefile.pro
+===================================================================
+--- serna-free-4-4.orig/serna/plugins/speller/Makefile.pro	2011-10-29 17:21:16.000000000 +0200
++++ serna-free-4-4/serna/plugins/speller/Makefile.pro	2011-10-29 17:27:05.000000000 +0200
+@@ -37,6 +37,7 @@
  USE = QtGui QtCore QtXml QtNetwork 
  
  syspkg:USE += aspell
@@ -76,9 +88,11 @@ Last-Update: <YYYY-MM-DD>
  
  HEADERS_PATTERN = \.h$ \
                    aspell/.*\.h$ \
---- serna-free-4.4.0.20111005.orig/serna/plaineditor/Makefile.pro
-+++ serna-free-4.4.0.20111005/serna/plaineditor/Makefile.pro
-@@ -26,7 +26,7 @@ LIBS =  \
+Index: serna-free-4-4/serna/plaineditor/Makefile.pro
+===================================================================
+--- serna-free-4-4.orig/serna/plaineditor/Makefile.pro	2011-10-29 17:21:16.000000000 +0200
++++ serna-free-4-4/serna/plaineditor/Makefile.pro	2011-10-29 17:27:05.000000000 +0200
+@@ -26,7 +26,7 @@
          $(top_builddir)/serna/lib/docview \
          $(top_builddir)/serna/lib/docutils 
  
@@ -87,3 +101,13 @@ Last-Update: <YYYY-MM-DD>
  
  HEADERS_PATTERN =   \.h$ \
                      impl/.*\.h$ \
+Index: serna-free-4-4/serna/app/MANIFEST.docbook
+===================================================================
+--- serna-free-4-4.orig/serna/app/MANIFEST.docbook	2011-10-29 17:27:42.000000000 +0200
++++ serna-free-4-4/serna/app/MANIFEST.docbook	2011-10-29 17:27:46.000000000 +0200
+@@ -349,4 +349,4 @@
+     xh.xml
+     lt.xml
+ 
+-include:${THIRD_DIR}/docbook/MANIFEST
++#include:${THIRD_DIR}/docbook/MANIFEST
