@@ -1,0 +1,89 @@
+Description: Upstream changes introduced in version 4.4.0.20111005-1
+ This patch has been created by dpkg-source during the package build.
+ Here's the last changelog entry, hopefully it gives details on why
+ those changes were made:
+ .
+ serna-free (4.4.0.20111005-1) UNRELEASED; urgency=low
+ .
+   * Start working on serna 4.4
+ .
+ The person named in the Author field signed this changelog entry.
+Author: Mathieu Malaterre <mathieu.malaterre@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- serna-free-4.4.0.20111005.orig/serna/app/Makefile.pro
++++ serna-free-4.4.0.20111005/serna/app/Makefile.pro
+@@ -125,6 +129,8 @@ release:LIBS =  \
+ 
+ unix:LIBS    += $$RTLIBS
+ 
++unix:LIBS    += -lqscintilla2
++
+ SOURCES_PATTERN *= .cxx$
+ win32:SOURCES_PATTERN *= win32/\.cxx$
+ 
+--- serna-free-4.4.0.20111005.orig/serna/app/MANIFEST.speller
++++ serna-free-4.4.0.20111005/serna/app/MANIFEST.speller
+@@ -2,7 +2,7 @@
+ # Files which are required for speller plugin
+ #
+ include:${THIRD_DIR}/aspell/MANIFEST
+-include:${THIRD_DIR}/hunspell/MANIFEST
++#include:${THIRD_DIR}/hunspell/MANIFEST
+ 
+ [all]
+ 
+--- serna-free-4.4.0.20111005.orig/serna/dll/Makefile.pro
++++ serna-free-4.4.0.20111005/serna/dll/Makefile.pro
+@@ -42,7 +42,7 @@ win32:SYS_LIBS += \
+                   msvcrt$$LIBDBG.lib \
+                   advapi32.lib gdi32.lib shell32.lib ole32.lib oleaut32.lib
+ 
+-linux:LIBS      = -lqt-mt -lsp -lantlr -lqassistantclient
++linux:LIBS      = -lqt-mt -lsp -lantlr -lqassistantclient -lqscintilla2
+ linux:SYS_LIBS  = -ldl -lutil
+ 
+ win32:LINK_FLAGS = -nologo -out:$@ -dll $$W32_LINK_FLAGS
+--- serna-free-4.4.0.20111005.orig/serna/core/Makefile.pro
++++ serna-free-4.4.0.20111005/serna/core/Makefile.pro
+@@ -68,6 +68,6 @@ UI_DIRS	       = $$srcdir/qt
+ ui_PATTERN      = $$UI_DIRS/.*\.ui$
+ ALL_DEPS += $(msg_h) core_resource_data.cpp
+ 
+-USE            = QtCore QtGui QtNetwork Qt3Support qtsingleapplication
++USE            = QtCore QtGui QtNetwork Qt3Support qtsingleapplication qscintilla
+ 
+ EXTRA_TEMPLATES = genlist resource2cxx
+--- serna-free-4.4.0.20111005.orig/serna/plugins/speller/Makefile.pro
++++ serna-free-4.4.0.20111005/serna/plugins/speller/Makefile.pro
+@@ -37,6 +37,7 @@ debug:LIBS +=   $(CLIB_LIB)/common \
+ USE = QtGui QtCore QtXml QtNetwork 
+ 
+ syspkg:USE += aspell
++unix:LIBS    += -laspell
+ 
+ HEADERS_PATTERN = \.h$ \
+                   aspell/.*\.h$ \
+--- serna-free-4.4.0.20111005.orig/serna/plaineditor/Makefile.pro
++++ serna-free-4.4.0.20111005/serna/plaineditor/Makefile.pro
+@@ -26,7 +26,7 @@ LIBS =  \
+         $(top_builddir)/serna/lib/docview \
+         $(top_builddir)/serna/lib/docutils 
+ 
+-USE             = QtCore QtGui Qt3Support QtXml QtNetwork qscintilla
++USE             = QtCore QtGui Qt3Support QtXml QtNetwork qscintilla qscintilla2
+ 
+ HEADERS_PATTERN =   \.h$ \
+                     impl/.*\.h$ \

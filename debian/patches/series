@@ -2,7 +2,7 @@
 #0002-libsp-adjustments-for-64-bits.patch
 #0003-In-find_package_by_files-return-undef-upon-failure.patch
 #0004-Make-find_header-also-search-in-usr-include-qt4.patch
-#0005-Hardcode-usr-lib-serna-as-DataDir.patch
+0005-Hardcode-usr-lib-serna-as-DataDir.patch
 #0006-Remove-__int__-method-from-SimpleWrappedObject.patch
 #0007-Allow-using-the-system-wide-docbook-xsl-installation.patch
 #0008-Use-system-wide-xsltproc-in-scripts.patch
@@ -11,7 +11,7 @@
 #0011-Refer-to-usr-share-xml-docbook-stylesheet-docbook-xs.patch
 #0012-Do-not-set-JAVA_HOME-environment-variable.patch
 #0013-Use-assistant-qt4-instead-of-assistant-on-Debian.patch
-#0014-Do-not-strip.patch
+0014-Do-not-strip.patch
 #0015-Do-not-hide-build-output.patch
 #0016-Improve-typdefs-for-integer-on-non-x86-platform.patch
 #0017-Remove-header-for-aspell.patch
@@ -21,3 +21,4 @@
 #0021-Bug-625004-References-cannot-be-mutable.patch
 #0022-Close-625004-include-cstddef.patch
 another_libsp64bitsfix.patch
+debian-changes-4.4.0.20111005-1
