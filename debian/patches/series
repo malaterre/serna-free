@@ -17,9 +17,9 @@
 #0017-Remove-header-for-aspell.patch
 #0018-This-commit-should-fix-the-isse-only-seen-in-x86-arm.patch
 #0019-Revert-patch-0018-with-some-modification.patch
-#0020-Provide-a-compilation-fix-for-gcc-4.5.patch
-#0021-Bug-625004-References-cannot-be-mutable.patch
-#0022-Close-625004-include-cstddef.patch
+0020-Provide-a-compilation-fix-for-gcc-4.5.patch
+0021-Bug-625004-References-cannot-be-mutable.patch
+0022-Close-625004-include-cstddef.patch
 debian-changes-4.4.0.20111005-1
 #rename_python.patch
 redo_python.patch
