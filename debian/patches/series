@@ -21,4 +21,5 @@
 #0021-Bug-625004-References-cannot-be-mutable.patch
 #0022-Close-625004-include-cstddef.patch
 debian-changes-4.4.0.20111005-1
-rename_python.patch
+#rename_python.patch
+redo_python.patch
