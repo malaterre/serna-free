@@ -41,8 +41,8 @@ override_dh_auto_install:
 	rm debian/serna/usr/lib/serna/LICENSE.GPL
 	rm debian/serna/usr/lib/serna/SP-COPYING
 	rm debian/serna/usr/lib/serna/plugins/dita/DITA-OT1.4/license.txt
-	rm debian/serna/usr/lib/serna/plugins/speller/ASPELL-COPYING
-	rm debian/serna/usr/lib/serna/plugins/speller/ASPELL-EN-COPYING
+	rm debian/serna/usr/lib/serna/plugins/speller/aspell/ASPELL-COPYING
+	rm debian/serna/usr/lib/serna/plugins/speller/aspell/ASPELL-EN-COPYING
 	rm debian/serna/usr/lib/serna/plugins/tei/tei-xsl-serna/SR-COPYING
 	rm debian/serna/usr/lib/serna/plugins/docbook/docbook-xsl-serna/NW-COPYING
 	rm debian/serna/usr/lib/serna/plugins/dita/DITA-OT1.4/tools/ant/LICENSE.dom
