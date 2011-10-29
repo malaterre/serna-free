@@ -1,0 +1,1055 @@
+Index: serna-free-4-4/3rd/python/2.6.2/Makefile
+===================================================================
+--- serna-free-4-4.orig/3rd/python/2.6.2/Makefile	2011-10-29 18:00:44.000000000 +0200
++++ /dev/null	1970-01-01 00:00:00.000000000 +0000
+@@ -1,64 +0,0 @@
+-######################################################################
+-# Syntext Editor autoconfiguration template
+-# 
+-######################################################################
+-
+-all_forward: gensrc all
+-
+-gensrc: force
+-
+-CONFIG          = staticlib mt dll syspkgonly dynamic release static linux warn_off
+-options         = buildtype=configure,package=Python
+-
+-main_srcdir     = /home/mathieu/debian/serna-work/32bits/serna-free/serna-free-4-4
+-top_srcdir      = /home/mathieu/debian/serna-work/32bits/serna-free/serna-free-4-4/3rd/python
+-top_builddir    = /home/mathieu/debian/serna-work/32bits/serna-free/serna-free-4-4/3rd/python
+-srcdir          = /home/mathieu/debian/serna-work/32bits/serna-free/serna-free-4-4/3rd/python/2.6.2
+-THIRD_DIR       = /home/mathieu/debian/serna-work/32bits/serna-free/serna-free-4-4/3rd
+-defaults        = /home/mathieu/debian/serna-work/32bits/serna-free/serna-free-4-4/3rd/defaults.pro
+-local_defaults  = 
+-VERSION         = 2.6.2
+-PLATFORM        = linux
+-CMD_SEP         = ;
+-
+-VPATH           = $(srcdir)
+-
+-TMAKEPATH       = /home/mathieu/debian/serna-work/32bits/serna-free/serna-free-4-4/tools/buildsys:/home/mathieu/debian/serna-work/32bits/serna-free/serna-free-4-4/tools/buildsys/tmake/lib/linux-g++:/home/mathieu/debian/serna-work/32bits/serna-free/serna-free-4-4/3rd:$(top_srcdir):$(srcdir)
+-MAKEFILE        = Makefile
+-MAKE            = make
+-TMAKE           = /home/mathieu/debian/serna-work/32bits/serna-free/serna-free-4-4/tools/buildsys/tmake/bin/tmake
+-TMAKE_OPTS      = 
+-PROJECT_FILE    = TMakefile.pro
+-MODULE_NAME     = 
+-OBJECTS_DIR 		= .obj
+-
+-extra_templates         = 
+-
+-$(MAKEFILE) configure:: $(srcdir)/$(PROJECT_FILE) $(defaults) $(local_defaults) $(extra_templates)
+-	TMAKEPATH=$(TMAKEPATH); export TMAKEPATH; $(TMAKE) $(TMAKE_OPTS) TMAKEPATH=$(TMAKEPATH) CONFIG="$(CONFIG)" \
+-        VERSION=$(VERSION) defaults=$(defaults) local_defaults=$(local_defaults) \
+-        main_srcdir=$(main_srcdir) top_srcdir=$(top_srcdir) top_builddir=$(top_builddir) \
+-        srcdir=$(srcdir) PLATFORM=$(PLATFORM) $(defaults) $(local_defaults) \
+-        THIRD_DIR=$(THIRD_DIR) $(srcdir)/$(PROJECT_FILE) -o $(MAKEFILE) \
+-        options+="$(options)" PROJECT_FILE=$(PROJECT_FILE) \
+-        MAKEFILE=$(MAKEFILE) "TMAKE=$(TMAKE)"
+-
+-configure:: force
+-
+-force:
+-
+-CLEANFILES  = 
+-CLEANDIRS   = 
+-
+-clean: lastclean
+-
+-lastclean:
+-
+-.PHONY: clean lastclean
+-
+-all:
+-
+-install:
+-
+-.PHONY: all install
+-
+Index: serna-free-4-4/3rd/python/2.6.2/TMakefile.pro
+===================================================================
+--- serna-free-4-4.orig/3rd/python/2.6.2/TMakefile.pro	2011-10-29 18:00:44.000000000 +0200
++++ /dev/null	1970-01-01 00:00:00.000000000 +0000
+@@ -1,2 +0,0 @@
+-
+-TEMPLATE = 3rd
+Index: serna-free-4-4/3rd/python/2.6.2/_patches/darwin/patch-Makefile.pre.in
+===================================================================
+--- serna-free-4-4.orig/3rd/python/2.6.2/_patches/darwin/patch-Makefile.pre.in	2011-10-29 18:00:45.000000000 +0200
++++ /dev/null	1970-01-01 00:00:00.000000000 +0000
+@@ -1,26 +0,0 @@
+---- old/Makefile.pre.in.orig	Tue Nov 18 12:54:00 2003
+-+++ new/Makefile.pre.in	Sat Jan 31 02:19:40 2004
+-@@ -354,6 +354,9 @@
+- libpython$(VERSION).sl: $(LIBRARY_OBJS)
+- 	$(LDSHARED) -o $@ $(LIBRARY_OBJS) $(LIBC) $(LIBM)
+- 
+-+libpython$(VERSION).dylib: $(LIBRARY_OBJS)
+-+	$(LINKCC) $(LDFLAGS) -dynamiclib -install_name $(LIBDIR)/$@ -current_version $(VERSION) -compatibility_version $(VERSION) -o $@ -flat_namespace -undefined suppress $(LIBRARY_OBJS) $(SHLIBS) $(LIBC) $(LIBM)
+-+
+- # This rule is here for OPENSTEP/Rhapsody/MacOSX. It builds a temporary
+- # minimal framework (not including the Lib directory and such) in the current
+- # directory.
+-@@ -613,7 +616,12 @@
+- 				(cd $(DESTDIR)$(LIBDIR); $(LN) -sf $(INSTSONAME) libpython$(VERSION)$(SO)); \
+- 			fi \
+- 		fi; \
+--	else	true; \
+-+	else \
+-+		if test -f libpython$(VERSION).dylib; then \
+-+			$(INSTALL_SHARED) libpython$(VERSION).dylib $(DESTDIR)$(LIBDIR)/libpython$(VERSION).dylib; \
+-+		else \
+-+			true; \
+-+		fi \
+- 	fi
+- 
+- # Install the manual page
+Index: serna-free-4-4/3rd/python/2.6.2/_patches/darwin/patch-configure.in
+===================================================================
+--- serna-free-4-4.orig/3rd/python/2.6.2/_patches/darwin/patch-configure.in	2011-10-29 18:00:44.000000000 +0200
++++ /dev/null	1970-01-01 00:00:00.000000000 +0000
+@@ -1,29 +0,0 @@
+---- old/configure.in.orig	Fri May  7 13:13:47 2004
+-+++ new/configure.in	Sun Jul 11 20:50:52 2004
+-@@ -909,9 +909,12 @@
+- 	    ;;
+- 	# is there any other compiler on Darwin besides gcc?
+- 	Darwin*)
+--	    # -Wno-long-double, -no-cpp-precomp, and -mno-fused-madd
+--	    # used to be here, but non-Apple gcc doesn't accept them.
+--
+-+		if [[ `/usr/bin/arch` = 'ppc' ]]
+-+		then
+-+			BASECFLAGS="$BASECFLAGS -Wno-long-double -no-cpp-precomp -mno-fused-madd -fno-common"
+-+		else
+-+			BASECFLAGS="$BASECFLAGS -Wno-long-double -no-cpp-precomp -fno-common"
+-+		fi
+- 
+- 	    if test "${enable_universalsdk}"; then
+- 		UNIVERSAL_ARCH_FLAGS=""
+-@@ -1654,8 +1657,8 @@
+- 			LDSHARED="$LDSHARED "'$(PYTHONFRAMEWORKPREFIX)/$(PYTHONFRAMEWORKDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)'
+- 		else
+- 			# No framework, use the Python app as bundle-loader
+--			BLDSHARED="$LDSHARED "'-bundle_loader $(BUILDPYTHON)'
+--			LDSHARED="$LDSHARED "'-bundle_loader $(BINDIR)/python$(VERSION)$(EXE)'
+-+			BLDSHARED="$LDSHARED "'-flat_namespace -undefined suppress -bundle_loader $(BUILDPYTHON)'
+-+			LDSHARED="$LDSHARED "'-flat_namespace -undefined suppress -bundle_loader $(BINDIR)/python$(VERSION)$(EXE)'
+- 		fi ;;
+- 	Darwin/*)
+- 		# Use -undefined dynamic_lookup whenever possible (10.3 and later).
+Index: serna-free-4-4/3rd/python/2.6.2/_patches/linux/Makefile.pre.in.patch
+===================================================================
+--- serna-free-4-4.orig/3rd/python/2.6.2/_patches/linux/Makefile.pre.in.patch	2011-10-29 18:00:45.000000000 +0200
++++ /dev/null	1970-01-01 00:00:00.000000000 +0000
+@@ -1,16 +0,0 @@
+---- Python-2.6.2.orig/Makefile.pre.in	2009-06-19 19:49:52.681960419 +0400
+-+++ Python-2.6.2/Makefile.pre.in	2009-06-19 19:50:18.752945048 +0400
+-@@ -886,11 +886,11 @@
+- 		done; \
+- 	done
+- 	$(INSTALL_DATA) $(srcdir)/LICENSE $(DESTDIR)$(LIBDEST)/LICENSE.txt
+--	PYTHONPATH=$(DESTDIR)$(LIBDEST)  $(RUNSHARED) \
+-+	-PYTHONPATH=$(DESTDIR)$(LIBDEST)  $(RUNSHARED) \
+- 		./$(BUILDPYTHON) -Wi -tt $(DESTDIR)$(LIBDEST)/compileall.py \
+- 		-d $(LIBDEST) -f \
+- 		-x 'bad_coding|badsyntax|site-packages' $(DESTDIR)$(LIBDEST)
+--	PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
+-+	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
+- 		./$(BUILDPYTHON) -Wi -tt -O $(DESTDIR)$(LIBDEST)/compileall.py \
+- 		-d $(LIBDEST) -f \
+- 		-x 'bad_coding|badsyntax|site-packages' $(DESTDIR)$(LIBDEST)
+Index: serna-free-4-4/3rd/python/2.6.2/_patches/win32/logging.patch
+===================================================================
+--- serna-free-4-4.orig/3rd/python/2.6.2/_patches/win32/logging.patch	2011-10-29 18:00:45.000000000 +0200
++++ /dev/null	1970-01-01 00:00:00.000000000 +0000
+@@ -1,19 +0,0 @@
+-*** Python-2.6.2/Lib/logging/__init__.py.orig	2011-02-24 21:33:40.204758244 +0300
+---- Python-2.6.2/Lib/logging/__init__.py	2011-02-24 21:34:02.945258573 +0300
+-***************
+-*** 99,105 ****
+-  #
+-  # If you don't want multiprocessing information in the log, set this to zero
+-  #
+-! logMultiprocessing = 1
+-  
+-  #
+-  # If you don't want process information in the log, set this to zero
+---- 99,105 ----
+-  #
+-  # If you don't want multiprocessing information in the log, set this to zero
+-  #
+-! logMultiprocessing = 0
+-  
+-  #
+-  # If you don't want process information in the log, set this to zero
+Index: serna-free-4-4/3rd/python/2.6.2/_patches/win32/pcbuild.sln.patch
+===================================================================
+--- serna-free-4-4.orig/3rd/python/2.6.2/_patches/win32/pcbuild.sln.patch	2011-10-29 18:00:45.000000000 +0200
++++ /dev/null	1970-01-01 00:00:00.000000000 +0000
+@@ -1,118 +0,0 @@
+---- Python-2.6.2.old/PCBuild/pcbuild.sln	2008-06-27 06:30:34.000000000 +0400
+-+++ Python-2.6.2/PCBuild/pcbuild.sln	2009-05-27 18:07:31.732494400 +0400
+-@@ -209,7 +209,6 @@
+- 		{F4229CC3-873C-49AE-9729-DD308ED4CD4A}.Release|x64.ActiveCfg = Release|x64
+- 		{F4229CC3-873C-49AE-9729-DD308ED4CD4A}.Release|x64.Build.0 = Release|x64
+- 		{E9E0A1F6-0009-4E8C-B8F8-1B8F5D49A058}.Debug|Win32.ActiveCfg = Debug|Win32
+--		{E9E0A1F6-0009-4E8C-B8F8-1B8F5D49A058}.Debug|Win32.Build.0 = Debug|Win32
+- 		{E9E0A1F6-0009-4E8C-B8F8-1B8F5D49A058}.Debug|x64.ActiveCfg = Debug|x64
+- 		{E9E0A1F6-0009-4E8C-B8F8-1B8F5D49A058}.Debug|x64.Build.0 = Debug|x64
+- 		{E9E0A1F6-0009-4E8C-B8F8-1B8F5D49A058}.PGInstrument|Win32.ActiveCfg = PGInstrument|Win32
+-@@ -221,7 +220,6 @@
+- 		{E9E0A1F6-0009-4E8C-B8F8-1B8F5D49A058}.PGUpdate|x64.ActiveCfg = PGUpdate|x64
+- 		{E9E0A1F6-0009-4E8C-B8F8-1B8F5D49A058}.PGUpdate|x64.Build.0 = PGUpdate|x64
+- 		{E9E0A1F6-0009-4E8C-B8F8-1B8F5D49A058}.Release|Win32.ActiveCfg = Release|Win32
+--		{E9E0A1F6-0009-4E8C-B8F8-1B8F5D49A058}.Release|Win32.Build.0 = Release|Win32
+- 		{E9E0A1F6-0009-4E8C-B8F8-1B8F5D49A058}.Release|x64.ActiveCfg = Release|x64
+- 		{E9E0A1F6-0009-4E8C-B8F8-1B8F5D49A058}.Release|x64.Build.0 = Release|x64
+- 		{C73F0EC1-358B-4177-940F-0846AC8B04CD}.Debug|Win32.ActiveCfg = Release|Win32
+-@@ -257,7 +255,6 @@
+- 		{28B5D777-DDF2-4B6B-B34F-31D938813856}.Release|x64.ActiveCfg = Release|x64
+- 		{28B5D777-DDF2-4B6B-B34F-31D938813856}.Release|x64.Build.0 = Release|x64
+- 		{B4D38F3F-68FB-42EC-A45D-E00657BB3627}.Debug|Win32.ActiveCfg = Debug|Win32
+--		{B4D38F3F-68FB-42EC-A45D-E00657BB3627}.Debug|Win32.Build.0 = Debug|Win32
+- 		{B4D38F3F-68FB-42EC-A45D-E00657BB3627}.Debug|x64.ActiveCfg = Debug|x64
+- 		{B4D38F3F-68FB-42EC-A45D-E00657BB3627}.Debug|x64.Build.0 = Debug|x64
+- 		{B4D38F3F-68FB-42EC-A45D-E00657BB3627}.PGInstrument|Win32.ActiveCfg = PGInstrument|Win32
+-@@ -269,7 +266,6 @@
+- 		{B4D38F3F-68FB-42EC-A45D-E00657BB3627}.PGUpdate|x64.ActiveCfg = PGUpdate|x64
+- 		{B4D38F3F-68FB-42EC-A45D-E00657BB3627}.PGUpdate|x64.Build.0 = PGUpdate|x64
+- 		{B4D38F3F-68FB-42EC-A45D-E00657BB3627}.Release|Win32.ActiveCfg = Release|Win32
+--		{B4D38F3F-68FB-42EC-A45D-E00657BB3627}.Release|Win32.Build.0 = Release|Win32
+- 		{B4D38F3F-68FB-42EC-A45D-E00657BB3627}.Release|x64.ActiveCfg = Release|x64
+- 		{B4D38F3F-68FB-42EC-A45D-E00657BB3627}.Release|x64.Build.0 = Release|x64
+- 		{0E9791DB-593A-465F-98BC-681011311618}.Debug|Win32.ActiveCfg = Debug|Win32
+-@@ -353,7 +349,6 @@
+- 		{86937F53-C189-40EF-8CE8-8759D8E7D480}.Release|x64.ActiveCfg = Release|x64
+- 		{86937F53-C189-40EF-8CE8-8759D8E7D480}.Release|x64.Build.0 = Release|x64
+- 		{13CECB97-4119-4316-9D42-8534019A5A44}.Debug|Win32.ActiveCfg = Debug|Win32
+--		{13CECB97-4119-4316-9D42-8534019A5A44}.Debug|Win32.Build.0 = Debug|Win32
+- 		{13CECB97-4119-4316-9D42-8534019A5A44}.Debug|x64.ActiveCfg = Debug|x64
+- 		{13CECB97-4119-4316-9D42-8534019A5A44}.Debug|x64.Build.0 = Debug|x64
+- 		{13CECB97-4119-4316-9D42-8534019A5A44}.PGInstrument|Win32.ActiveCfg = PGInstrument|Win32
+-@@ -365,11 +360,9 @@
+- 		{13CECB97-4119-4316-9D42-8534019A5A44}.PGUpdate|x64.ActiveCfg = PGUpdate|x64
+- 		{13CECB97-4119-4316-9D42-8534019A5A44}.PGUpdate|x64.Build.0 = PGUpdate|x64
+- 		{13CECB97-4119-4316-9D42-8534019A5A44}.Release|Win32.ActiveCfg = Release|Win32
+--		{13CECB97-4119-4316-9D42-8534019A5A44}.Release|Win32.Build.0 = Release|Win32
+- 		{13CECB97-4119-4316-9D42-8534019A5A44}.Release|x64.ActiveCfg = Release|x64
+- 		{13CECB97-4119-4316-9D42-8534019A5A44}.Release|x64.Build.0 = Release|x64
+- 		{C6E20F84-3247-4AD6-B051-B073268F73BA}.Debug|Win32.ActiveCfg = Debug|Win32
+--		{C6E20F84-3247-4AD6-B051-B073268F73BA}.Debug|Win32.Build.0 = Debug|Win32
+- 		{C6E20F84-3247-4AD6-B051-B073268F73BA}.Debug|x64.ActiveCfg = Debug|x64
+- 		{C6E20F84-3247-4AD6-B051-B073268F73BA}.Debug|x64.Build.0 = Debug|x64
+- 		{C6E20F84-3247-4AD6-B051-B073268F73BA}.PGInstrument|Win32.ActiveCfg = PGInstrument|Win32
+-@@ -381,7 +374,6 @@
+- 		{C6E20F84-3247-4AD6-B051-B073268F73BA}.PGUpdate|x64.ActiveCfg = PGUpdate|x64
+- 		{C6E20F84-3247-4AD6-B051-B073268F73BA}.PGUpdate|x64.Build.0 = PGUpdate|x64
+- 		{C6E20F84-3247-4AD6-B051-B073268F73BA}.Release|Win32.ActiveCfg = Release|Win32
+--		{C6E20F84-3247-4AD6-B051-B073268F73BA}.Release|Win32.Build.0 = Release|Win32
+- 		{C6E20F84-3247-4AD6-B051-B073268F73BA}.Release|x64.ActiveCfg = Release|x64
+- 		{C6E20F84-3247-4AD6-B051-B073268F73BA}.Release|x64.Build.0 = Release|x64
+- 		{6901D91C-6E48-4BB7-9FEC-700C8131DF1D}.Debug|Win32.ActiveCfg = Debug|Win32
+-@@ -401,7 +393,6 @@
+- 		{6901D91C-6E48-4BB7-9FEC-700C8131DF1D}.Release|x64.ActiveCfg = Release|x64
+- 		{6901D91C-6E48-4BB7-9FEC-700C8131DF1D}.Release|x64.Build.0 = Release|x64
+- 		{4946ECAC-2E69-4BF8-A90A-F5136F5094DF}.Debug|Win32.ActiveCfg = Debug|Win32
+--		{4946ECAC-2E69-4BF8-A90A-F5136F5094DF}.Debug|Win32.Build.0 = Debug|Win32
+- 		{4946ECAC-2E69-4BF8-A90A-F5136F5094DF}.Debug|x64.ActiveCfg = Debug|x64
+- 		{4946ECAC-2E69-4BF8-A90A-F5136F5094DF}.Debug|x64.Build.0 = Debug|x64
+- 		{4946ECAC-2E69-4BF8-A90A-F5136F5094DF}.PGInstrument|Win32.ActiveCfg = PGInstrument|Win32
+-@@ -413,11 +404,9 @@
+- 		{4946ECAC-2E69-4BF8-A90A-F5136F5094DF}.PGUpdate|x64.ActiveCfg = PGUpdate|x64
+- 		{4946ECAC-2E69-4BF8-A90A-F5136F5094DF}.PGUpdate|x64.Build.0 = PGUpdate|x64
+- 		{4946ECAC-2E69-4BF8-A90A-F5136F5094DF}.Release|Win32.ActiveCfg = Release|Win32
+--		{4946ECAC-2E69-4BF8-A90A-F5136F5094DF}.Release|Win32.Build.0 = Release|Win32
+- 		{4946ECAC-2E69-4BF8-A90A-F5136F5094DF}.Release|x64.ActiveCfg = Release|x64
+- 		{4946ECAC-2E69-4BF8-A90A-F5136F5094DF}.Release|x64.Build.0 = Release|x64
+- 		{73FCD2BD-F133-46B7-8EC1-144CD82A59D5}.Debug|Win32.ActiveCfg = Debug|Win32
+--		{73FCD2BD-F133-46B7-8EC1-144CD82A59D5}.Debug|Win32.Build.0 = Debug|Win32
+- 		{73FCD2BD-F133-46B7-8EC1-144CD82A59D5}.Debug|x64.ActiveCfg = Debug|x64
+- 		{73FCD2BD-F133-46B7-8EC1-144CD82A59D5}.Debug|x64.Build.0 = Debug|x64
+- 		{73FCD2BD-F133-46B7-8EC1-144CD82A59D5}.PGInstrument|Win32.ActiveCfg = PGInstrument|Win32
+-@@ -429,7 +418,6 @@
+- 		{73FCD2BD-F133-46B7-8EC1-144CD82A59D5}.PGUpdate|x64.ActiveCfg = PGUpdate|x64
+- 		{73FCD2BD-F133-46B7-8EC1-144CD82A59D5}.PGUpdate|x64.Build.0 = PGUpdate|x64
+- 		{73FCD2BD-F133-46B7-8EC1-144CD82A59D5}.Release|Win32.ActiveCfg = Release|Win32
+--		{73FCD2BD-F133-46B7-8EC1-144CD82A59D5}.Release|Win32.Build.0 = Release|Win32
+- 		{73FCD2BD-F133-46B7-8EC1-144CD82A59D5}.Release|x64.ActiveCfg = Release|x64
+- 		{73FCD2BD-F133-46B7-8EC1-144CD82A59D5}.Release|x64.Build.0 = Release|x64
+- 		{18CAE28C-B454-46C1-87A0-493D91D97F03}.Debug|Win32.ActiveCfg = Debug|Win32
+-@@ -489,7 +477,6 @@
+- 		{EB1C19C1-1F18-421E-9735-CAEE69DC6A3C}.Release|Win32.ActiveCfg = Release|Win32
+- 		{EB1C19C1-1F18-421E-9735-CAEE69DC6A3C}.Release|x64.ActiveCfg = Release|x64
+- 		{447F05A8-F581-4CAC-A466-5AC7936E207E}.Debug|Win32.ActiveCfg = Debug|Win32
+--		{447F05A8-F581-4CAC-A466-5AC7936E207E}.Debug|Win32.Build.0 = Debug|Win32
+- 		{447F05A8-F581-4CAC-A466-5AC7936E207E}.Debug|x64.ActiveCfg = Debug|x64
+- 		{447F05A8-F581-4CAC-A466-5AC7936E207E}.Debug|x64.Build.0 = Debug|x64
+- 		{447F05A8-F581-4CAC-A466-5AC7936E207E}.PGInstrument|Win32.ActiveCfg = PGInstrument|Win32
+-@@ -501,11 +488,9 @@
+- 		{447F05A8-F581-4CAC-A466-5AC7936E207E}.PGUpdate|x64.ActiveCfg = PGUpdate|x64
+- 		{447F05A8-F581-4CAC-A466-5AC7936E207E}.PGUpdate|x64.Build.0 = PGUpdate|x64
+- 		{447F05A8-F581-4CAC-A466-5AC7936E207E}.Release|Win32.ActiveCfg = Release|Win32
+--		{447F05A8-F581-4CAC-A466-5AC7936E207E}.Release|Win32.Build.0 = Release|Win32
+- 		{447F05A8-F581-4CAC-A466-5AC7936E207E}.Release|x64.ActiveCfg = Release|x64
+- 		{447F05A8-F581-4CAC-A466-5AC7936E207E}.Release|x64.Build.0 = Release|x64
+- 		{A1A295E5-463C-437F-81CA-1F32367685DA}.Debug|Win32.ActiveCfg = Debug|Win32
+--		{A1A295E5-463C-437F-81CA-1F32367685DA}.Debug|Win32.Build.0 = Debug|Win32
+- 		{A1A295E5-463C-437F-81CA-1F32367685DA}.Debug|x64.ActiveCfg = Debug|x64
+- 		{A1A295E5-463C-437F-81CA-1F32367685DA}.Debug|x64.Build.0 = Debug|x64
+- 		{A1A295E5-463C-437F-81CA-1F32367685DA}.PGInstrument|Win32.ActiveCfg = PGInstrument|Win32
+-@@ -517,7 +502,6 @@
+- 		{A1A295E5-463C-437F-81CA-1F32367685DA}.PGUpdate|x64.ActiveCfg = PGUpdate|x64
+- 		{A1A295E5-463C-437F-81CA-1F32367685DA}.PGUpdate|x64.Build.0 = PGUpdate|x64
+- 		{A1A295E5-463C-437F-81CA-1F32367685DA}.Release|Win32.ActiveCfg = Release|Win32
+--		{A1A295E5-463C-437F-81CA-1F32367685DA}.Release|Win32.Build.0 = Release|Win32
+- 		{A1A295E5-463C-437F-81CA-1F32367685DA}.Release|x64.ActiveCfg = Release|x64
+- 		{A1A295E5-463C-437F-81CA-1F32367685DA}.Release|x64.Build.0 = Release|x64
+- 		{9E48B300-37D1-11DD-8C41-005056C00008}.Debug|Win32.ActiveCfg = Debug|Win32
+Index: serna-free-4-4/3rd/python/2.6.2/_patches/win32/pcbuild71.sln.patch
+===================================================================
+--- serna-free-4-4.orig/3rd/python/2.6.2/_patches/win32/pcbuild71.sln.patch	2011-10-29 18:00:45.000000000 +0200
++++ /dev/null	1970-01-01 00:00:00.000000000 +0000
+@@ -1,56 +0,0 @@
+---- Python-2.6.2.orig/PC/VS7.1/pcbuild.sln	2009-07-07 16:30:24.100256400 +0400
+-+++ Python-2.6.2/PC/VS7.1/pcbuild.sln	2009-07-07 18:38:56.544113700 +0400
+-@@ -113,9 +113,7 @@
+- 	EndGlobalSection
+- 	GlobalSection(ProjectConfiguration) = postSolution
+- 		{E1DBB220-D64B-423D-A545-539A55AA7FE2}.Debug.ActiveCfg = Debug|Win32
+--		{E1DBB220-D64B-423D-A545-539A55AA7FE2}.Debug.Build.0 = Debug|Win32
+- 		{E1DBB220-D64B-423D-A545-539A55AA7FE2}.Release.ActiveCfg = Release|Win32
+--		{E1DBB220-D64B-423D-A545-539A55AA7FE2}.Release.Build.0 = Release|Win32
+- 		{E1DBB220-D64B-423D-A545-539A55AA7FE2}.ReleaseAMD64.ActiveCfg = ReleaseAMD64|Win32
+- 		{E1DBB220-D64B-423D-A545-539A55AA7FE2}.ReleaseAMD64.Build.0 = ReleaseAMD64|Win32
+- 		{E1DBB220-D64B-423D-A545-539A55AA7FE2}.ReleaseItanium.ActiveCfg = ReleaseItanium|Win32
+-@@ -129,33 +127,25 @@
+- 		{324F66C2-44D0-4D50-B979-F9DAE7FD36DB}.ReleaseItanium.ActiveCfg = ReleaseItanium|Win32
+- 		{324F66C2-44D0-4D50-B979-F9DAE7FD36DB}.ReleaseItanium.Build.0 = ReleaseItanium|Win32
+- 		{8E85BA54-8A47-4C8B-B72E-8E17579CC6D7}.Debug.ActiveCfg = Debug|Win32
+--		{8E85BA54-8A47-4C8B-B72E-8E17579CC6D7}.Debug.Build.0 = Debug|Win32
+- 		{8E85BA54-8A47-4C8B-B72E-8E17579CC6D7}.Release.ActiveCfg = Release|Win32
+--		{8E85BA54-8A47-4C8B-B72E-8E17579CC6D7}.Release.Build.0 = Release|Win32
+- 		{8E85BA54-8A47-4C8B-B72E-8E17579CC6D7}.ReleaseAMD64.ActiveCfg = ReleaseAMD64|Win32
+- 		{8E85BA54-8A47-4C8B-B72E-8E17579CC6D7}.ReleaseAMD64.Build.0 = ReleaseAMD64|Win32
+- 		{8E85BA54-8A47-4C8B-B72E-8E17579CC6D7}.ReleaseItanium.ActiveCfg = ReleaseItanium|Win32
+- 		{8E85BA54-8A47-4C8B-B72E-8E17579CC6D7}.ReleaseItanium.Build.0 = ReleaseItanium|Win32
+- 		{59CBF474-9E06-4C50-9142-C44A118BB447}.Debug.ActiveCfg = Debug|Win32
+--		{59CBF474-9E06-4C50-9142-C44A118BB447}.Debug.Build.0 = Debug|Win32
+- 		{59CBF474-9E06-4C50-9142-C44A118BB447}.Release.ActiveCfg = Release|Win32
+--		{59CBF474-9E06-4C50-9142-C44A118BB447}.Release.Build.0 = Release|Win32
+- 		{59CBF474-9E06-4C50-9142-C44A118BB447}.ReleaseAMD64.ActiveCfg = ReleaseAMD64|Win32
+- 		{59CBF474-9E06-4C50-9142-C44A118BB447}.ReleaseAMD64.Build.0 = ReleaseAMD64|Win32
+- 		{59CBF474-9E06-4C50-9142-C44A118BB447}.ReleaseItanium.ActiveCfg = ReleaseItanium|Win32
+- 		{59CBF474-9E06-4C50-9142-C44A118BB447}.ReleaseItanium.Build.0 = ReleaseItanium|Win32
+- 		{5B51DFF7-5DC0-41F8-8791-A4AB7114A151}.Debug.ActiveCfg = Debug|Win32
+--		{5B51DFF7-5DC0-41F8-8791-A4AB7114A151}.Debug.Build.0 = Debug|Win32
+- 		{5B51DFF7-5DC0-41F8-8791-A4AB7114A151}.Release.ActiveCfg = Release|Win32
+--		{5B51DFF7-5DC0-41F8-8791-A4AB7114A151}.Release.Build.0 = Release|Win32
+- 		{5B51DFF7-5DC0-41F8-8791-A4AB7114A151}.ReleaseAMD64.ActiveCfg = ReleaseAMD64|Win32
+- 		{5B51DFF7-5DC0-41F8-8791-A4AB7114A151}.ReleaseAMD64.Build.0 = ReleaseAMD64|Win32
+- 		{5B51DFF7-5DC0-41F8-8791-A4AB7114A151}.ReleaseItanium.ActiveCfg = ReleaseItanium|Win32
+- 		{5B51DFF7-5DC0-41F8-8791-A4AB7114A151}.ReleaseItanium.Build.0 = ReleaseItanium|Win32
+- 		{AC557788-6354-43F7-BE05-C9C8C59A344A}.Debug.ActiveCfg = Debug|Win32
+--		{AC557788-6354-43F7-BE05-C9C8C59A344A}.Debug.Build.0 = Debug|Win32
+- 		{AC557788-6354-43F7-BE05-C9C8C59A344A}.Release.ActiveCfg = Release|Win32
+--		{AC557788-6354-43F7-BE05-C9C8C59A344A}.Release.Build.0 = Release|Win32
+- 		{AC557788-6354-43F7-BE05-C9C8C59A344A}.ReleaseAMD64.ActiveCfg = ReleaseAMD64|Win32
+- 		{AC557788-6354-43F7-BE05-C9C8C59A344A}.ReleaseAMD64.Build.0 = ReleaseAMD64|Win32
+- 		{AC557788-6354-43F7-BE05-C9C8C59A344A}.ReleaseItanium.ActiveCfg = ReleaseItanium|Win32
+-@@ -269,9 +259,7 @@
+- 		{8CF334D9-4F82-42EB-97AF-83592C5AFD2F}.ReleaseAMD64.Build.0 = ReleaseAMD64|Win32
+- 		{8CF334D9-4F82-42EB-97AF-83592C5AFD2F}.ReleaseItanium.ActiveCfg = ReleaseItanium|Win32
+- 		{2FF0A312-22F9-4C34-B070-842916DE27A9}.Debug.ActiveCfg = Debug|Win32
+--		{2FF0A312-22F9-4C34-B070-842916DE27A9}.Debug.Build.0 = Debug|Win32
+- 		{2FF0A312-22F9-4C34-B070-842916DE27A9}.Release.ActiveCfg = Release|Win32
+--		{2FF0A312-22F9-4C34-B070-842916DE27A9}.Release.Build.0 = Release|Win32
+- 		{2FF0A312-22F9-4C34-B070-842916DE27A9}.ReleaseAMD64.ActiveCfg = ReleaseAMD64|Win32
+- 		{2FF0A312-22F9-4C34-B070-842916DE27A9}.ReleaseAMD64.Build.0 = ReleaseAMD64|Win32
+- 		{2FF0A312-22F9-4C34-B070-842916DE27A9}.ReleaseItanium.ActiveCfg = ReleaseItanium|Win32
+Index: serna-free-4-4/3rd/python/2.6.2/install.bat
+===================================================================
+--- serna-free-4-4.orig/3rd/python/2.6.2/install.bat	2011-10-29 18:00:44.000000000 +0200
++++ /dev/null	1970-01-01 00:00:00.000000000 +0000
+@@ -1,45 +0,0 @@
+-@echo off
+-
+-set DSTDIR=%THIRD_DIR%
+-set PYEXEDIR=%INST_SRCDIR%\PCbuild
+-
+-for %%C in (%CONFIG%) do (
+-    if "%%C" == "static" set TYPE=%%C
+-    if "%%C" == "dynamic" set TYPE=%%C
+-    if "%%C" == "debug" set DTYPE=%%C
+-    if "%%C" == "release" set DTYPE=%%C
+-    if "%%C" == "vc2003" set PYEXEDIR=%INST_SRCDIR%\PC\VS7.1
+-)
+-
+-:inst
+-
+-if "%DTYPE%" == "debug" set NMSFX=_d
+-
+-echo @set PYTHONHOME=%INST_SRCDIR%> %DSTDIR%\bin\python.bat
+-echo @set PATH=%%PATH%%;%THIRD_DIR%\lib;%PYEXEDIR%>> %DSTDIR%\bin\python.bat
+-echo @%PYEXEDIR%\python%NMSFX%.exe %%*>> %DSTDIR%\bin\python.bat
+-
+-rem Needed for sip
+-@echo on
+-
+-xcopy /y /q /r %INST_SRCDIR%\PC\pyconfig.h %INST_SRCDIR%\Include\
+-
+-mkdir %INST_SRCDIR%\libs
+-if "%DTYPE%" == "debug" (
+-    copy /y /b %PYEXEDIR%\python26_d.lib %INST_SRCDIR%\libs\python26.lib
+-    xcopy /y /q /r %PYEXEDIR%\python26_d.lib %INST_SRCDIR%\libs\
+-)
+-if "%DTYPE%" == "release" (
+-    xcopy /y /q /r %PYEXEDIR%\python26.lib %INST_SRCDIR%\libs\
+-)
+-
+-rem End sip section
+-
+-xcopy /y /q /e /c /r %INST_SRCDIR%\Include %DSTDIR%\python\Include\
+-xcopy /y /q /r %PYEXEDIR%\python26%NMSFX%.lib %DSTDIR%\lib\
+-xcopy /y /q /r %PYEXEDIR%\python26%NMSFX%.dll %DSTDIR%\lib\
+-xcopy /y /q /r %PYEXEDIR%\*%NMSFX%.pyd %DSTDIR%\python\modules\
+-xcopy /y /q /r %INST_SRCDIR%\PC\pyconfig.h %DSTDIR%\python\
+-xcopy /y /q /r /i %PYEXEDIR% %INST_SRCDIR%\DLLs
+-
+-copy %THIRD_DIR%\python\MANIFEST.python %THIRD_DIR%\python\MANIFEST
+Index: serna-free-4-4/3rd/python/2.6.2/install.sh
+===================================================================
+--- serna-free-4-4.orig/3rd/python/2.6.2/install.sh	2011-10-29 18:00:44.000000000 +0200
++++ /dev/null	1970-01-01 00:00:00.000000000 +0000
+@@ -1,97 +0,0 @@
+-#!/bin/sh -x
+-
+-SRCDIR=$1; shift
+-DSTDIR=$1; shift
+-RELDIR=$1; shift
+-VERSION=$1; shift
+-THRSFX=
+-
+-gmake -C ${SRCDIR} prefix=${DSTDIR}/python/install install
+-
+-TYPE=static; LIBSFX=a
+-
+-while [ "x$1" != "x" ]; do
+-  case $1 in
+-    debug)   DTYPE=debug ;;
+-    release) DTYPE=release ;;
+-    dynamic) TYPE=dynamic;  LIBSFX=so ;;
+-    thread)  THRSFX=-mt ;;
+-    *) ;;
+-  esac
+-  shift
+-done
+-
+-UNAME=`uname -s`
+-if [ "$UNAME" = "Darwin" ]; then
+-    LIBSFX=dylib
+-    LDLP="DYLD_LIBRARY_PATH"
+-    EXESFX=.exe
+-    SHLIBVER_SFX=
+-else
+-    LIBSFX=so
+-    LDLP="LD_LIBRARY_PATH"
+-    EXESFX=
+-    SHLIBVER_SFX=.1.0
+-fi
+-
+-. ${THIRD_DIR}/functions
+-
+-install_wrapper() {
+-    PYBINDIR=$1; DST=$2; NAME=$3; SRCNAME=$4
+-    cd $DST
+-    [ "$SRCNAME" = "" ] && SRCNAME=$NAME
+-    if [ -r ${PYBINDIR}/${SRCNAME} ]; then
+-	cat << EOF > $NAME
+-#!/bin/sh
+-THIRD_DIR=${THIRD_DIR}
+-$LDLP=$PYBINDIR:\${THIRD_DIR}/lib:\$$LDLP; export $LDLP
+-test -z "\${PYTHONHOME}" || unset PYTHONHOME
+-$PYBINDIR/${SRCNAME} "\$@"
+-EOF
+-	chmod 755 $NAME
+-    else
+-	echo "While in" `pwd`": '${PYTHONHOME}/${SRCNAME}' doesn't exist, exiting..."; exit 1
+-    fi
+-}
+-
+-install_file() {
+-    SRC=$1; DST=$2; NAME=$3
+-    cd $DST
+-    if [ -r ${SRC} ]; then
+-        symlink ${SRC} ./$NAME
+-    else
+-        echo "While in" `pwd`": '${SRC}' doesn't exist, exiting..."; exit 1
+-    fi
+-}
+-
+-PYTHON=python
+-VERSFX=`echo $VERSION | sed -e 's/\..$//'`
+-PYINSTDIR=${THIRD_DIR}/python/install
+-
+-install_wrapper ${PYINSTDIR}/bin ${DSTDIR}/bin python $PYTHON
+-install_file ${PYINSTDIR}/include/python${VERSFX}/pyconfig.h ${DSTDIR}/python
+-install_file ${PYINSTDIR}/include ${DSTDIR}/python
+-symlink ${PYINSTDIR}/include/python${VERSFX}/* ${PYINSTDIR}/include/
+-install_file ../${RELDIR}/libpython$VERSFX.a ${DSTDIR}/lib libpython.a
+-symlink MANIFEST.python ${THIRD_DIR}/python/MANIFEST
+-
+-if [ $TYPE = dynamic ]; then
+-    case $UNAME in
+-        [Dd]arwin)
+-            install_file ../${RELDIR}/libpython${VERSFX}.${LIBSFX} ${DSTDIR}/lib
+-            symlink libpython${MAJORVER}.${LIBSFX} ${DSTDIR}/lib/libpython${MAJORVER}.${LIBSFX}
+-            install_name_tool -id libpython${VERSFX}.${LIBSFX} ${DSTDIR}/lib/libpython${VERSFX}.${LIBSFX}
+-            ID="libpython${VERSFX}.${LIBSFX}"
+-            INSTLIB="${THIRD_DIR}/python/install/lib/${ID}"
+-            chmod u+w ${INSTLIB}
+-            install_name_tool -id ${ID} ${INSTLIB}
+-            ;;
+-        SunOS)
+-            install_file ../${RELDIR}/libpython${VERSFX}.${LIBSFX} ${DSTDIR}/lib
+-            ;;
+-        *)
+-            install_file ../${RELDIR}/libpython${VERSFX}.${LIBSFX} ${DSTDIR}/lib
+-            install_file ../${RELDIR}/libpython${VERSFX}.${LIBSFX}.* ${DSTDIR}/lib
+-            ;;
+-    esac
+-fi
+Index: serna-free-4-4/3rd/python/2.7.2/Makefile
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ serna-free-4-4/3rd/python/2.7.2/Makefile	2011-10-29 17:54:07.000000000 +0200
+@@ -0,0 +1,64 @@
++######################################################################
++# Syntext Editor autoconfiguration template
++# 
++######################################################################
++
++all_forward: gensrc all
++
++gensrc: force
++
++CONFIG          = staticlib mt dll syspkgonly dynamic release static linux warn_off
++options         = buildtype=configure,package=Python
++
++main_srcdir     = /home/mathieu/debian/serna-work/32bits/serna-free/serna-free-4-4
++top_srcdir      = /home/mathieu/debian/serna-work/32bits/serna-free/serna-free-4-4/3rd/python
++top_builddir    = /home/mathieu/debian/serna-work/32bits/serna-free/serna-free-4-4/3rd/python
++srcdir          = /home/mathieu/debian/serna-work/32bits/serna-free/serna-free-4-4/3rd/python/2.6.2
++THIRD_DIR       = /home/mathieu/debian/serna-work/32bits/serna-free/serna-free-4-4/3rd
++defaults        = /home/mathieu/debian/serna-work/32bits/serna-free/serna-free-4-4/3rd/defaults.pro
++local_defaults  = 
++VERSION         = 2.6.2
++PLATFORM        = linux
++CMD_SEP         = ;
++
++VPATH           = $(srcdir)
++
++TMAKEPATH       = /home/mathieu/debian/serna-work/32bits/serna-free/serna-free-4-4/tools/buildsys:/home/mathieu/debian/serna-work/32bits/serna-free/serna-free-4-4/tools/buildsys/tmake/lib/linux-g++:/home/mathieu/debian/serna-work/32bits/serna-free/serna-free-4-4/3rd:$(top_srcdir):$(srcdir)
++MAKEFILE        = Makefile
++MAKE            = make
++TMAKE           = /home/mathieu/debian/serna-work/32bits/serna-free/serna-free-4-4/tools/buildsys/tmake/bin/tmake
++TMAKE_OPTS      = 
++PROJECT_FILE    = TMakefile.pro
++MODULE_NAME     = 
++OBJECTS_DIR 		= .obj
++
++extra_templates         = 
++
++$(MAKEFILE) configure:: $(srcdir)/$(PROJECT_FILE) $(defaults) $(local_defaults) $(extra_templates)
++	TMAKEPATH=$(TMAKEPATH); export TMAKEPATH; $(TMAKE) $(TMAKE_OPTS) TMAKEPATH=$(TMAKEPATH) CONFIG="$(CONFIG)" \
++        VERSION=$(VERSION) defaults=$(defaults) local_defaults=$(local_defaults) \
++        main_srcdir=$(main_srcdir) top_srcdir=$(top_srcdir) top_builddir=$(top_builddir) \
++        srcdir=$(srcdir) PLATFORM=$(PLATFORM) $(defaults) $(local_defaults) \
++        THIRD_DIR=$(THIRD_DIR) $(srcdir)/$(PROJECT_FILE) -o $(MAKEFILE) \
++        options+="$(options)" PROJECT_FILE=$(PROJECT_FILE) \
++        MAKEFILE=$(MAKEFILE) "TMAKE=$(TMAKE)"
++
++configure:: force
++
++force:
++
++CLEANFILES  = 
++CLEANDIRS   = 
++
++clean: lastclean
++
++lastclean:
++
++.PHONY: clean lastclean
++
++all:
++
++install:
++
++.PHONY: all install
++
+Index: serna-free-4-4/3rd/python/2.7.2/TMakefile.pro
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ serna-free-4-4/3rd/python/2.7.2/TMakefile.pro	2011-10-29 17:21:11.000000000 +0200
+@@ -0,0 +1,2 @@
++
++TEMPLATE = 3rd
+Index: serna-free-4-4/3rd/python/2.7.2/_patches/darwin/patch-Makefile.pre.in
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ serna-free-4-4/3rd/python/2.7.2/_patches/darwin/patch-Makefile.pre.in	2011-10-29 17:21:11.000000000 +0200
+@@ -0,0 +1,26 @@
++--- old/Makefile.pre.in.orig	Tue Nov 18 12:54:00 2003
+++++ new/Makefile.pre.in	Sat Jan 31 02:19:40 2004
++@@ -354,6 +354,9 @@
++ libpython$(VERSION).sl: $(LIBRARY_OBJS)
++ 	$(LDSHARED) -o $@ $(LIBRARY_OBJS) $(LIBC) $(LIBM)
++ 
+++libpython$(VERSION).dylib: $(LIBRARY_OBJS)
+++	$(LINKCC) $(LDFLAGS) -dynamiclib -install_name $(LIBDIR)/$@ -current_version $(VERSION) -compatibility_version $(VERSION) -o $@ -flat_namespace -undefined suppress $(LIBRARY_OBJS) $(SHLIBS) $(LIBC) $(LIBM)
+++
++ # This rule is here for OPENSTEP/Rhapsody/MacOSX. It builds a temporary
++ # minimal framework (not including the Lib directory and such) in the current
++ # directory.
++@@ -613,7 +616,12 @@
++ 				(cd $(DESTDIR)$(LIBDIR); $(LN) -sf $(INSTSONAME) libpython$(VERSION)$(SO)); \
++ 			fi \
++ 		fi; \
++-	else	true; \
+++	else \
+++		if test -f libpython$(VERSION).dylib; then \
+++			$(INSTALL_SHARED) libpython$(VERSION).dylib $(DESTDIR)$(LIBDIR)/libpython$(VERSION).dylib; \
+++		else \
+++			true; \
+++		fi \
++ 	fi
++ 
++ # Install the manual page
+Index: serna-free-4-4/3rd/python/2.7.2/_patches/darwin/patch-configure.in
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ serna-free-4-4/3rd/python/2.7.2/_patches/darwin/patch-configure.in	2011-10-29 17:21:11.000000000 +0200
+@@ -0,0 +1,29 @@
++--- old/configure.in.orig	Fri May  7 13:13:47 2004
+++++ new/configure.in	Sun Jul 11 20:50:52 2004
++@@ -909,9 +909,12 @@
++ 	    ;;
++ 	# is there any other compiler on Darwin besides gcc?
++ 	Darwin*)
++-	    # -Wno-long-double, -no-cpp-precomp, and -mno-fused-madd
++-	    # used to be here, but non-Apple gcc doesn't accept them.
++-
+++		if [[ `/usr/bin/arch` = 'ppc' ]]
+++		then
+++			BASECFLAGS="$BASECFLAGS -Wno-long-double -no-cpp-precomp -mno-fused-madd -fno-common"
+++		else
+++			BASECFLAGS="$BASECFLAGS -Wno-long-double -no-cpp-precomp -fno-common"
+++		fi
++ 
++ 	    if test "${enable_universalsdk}"; then
++ 		UNIVERSAL_ARCH_FLAGS=""
++@@ -1654,8 +1657,8 @@
++ 			LDSHARED="$LDSHARED "'$(PYTHONFRAMEWORKPREFIX)/$(PYTHONFRAMEWORKDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)'
++ 		else
++ 			# No framework, use the Python app as bundle-loader
++-			BLDSHARED="$LDSHARED "'-bundle_loader $(BUILDPYTHON)'
++-			LDSHARED="$LDSHARED "'-bundle_loader $(BINDIR)/python$(VERSION)$(EXE)'
+++			BLDSHARED="$LDSHARED "'-flat_namespace -undefined suppress -bundle_loader $(BUILDPYTHON)'
+++			LDSHARED="$LDSHARED "'-flat_namespace -undefined suppress -bundle_loader $(BINDIR)/python$(VERSION)$(EXE)'
++ 		fi ;;
++ 	Darwin/*)
++ 		# Use -undefined dynamic_lookup whenever possible (10.3 and later).
+Index: serna-free-4-4/3rd/python/2.7.2/_patches/linux/Makefile.pre.in.patch
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ serna-free-4-4/3rd/python/2.7.2/_patches/linux/Makefile.pre.in.patch	2011-10-29 17:21:11.000000000 +0200
+@@ -0,0 +1,16 @@
++--- Python-2.6.2.orig/Makefile.pre.in	2009-06-19 19:49:52.681960419 +0400
+++++ Python-2.6.2/Makefile.pre.in	2009-06-19 19:50:18.752945048 +0400
++@@ -886,11 +886,11 @@
++ 		done; \
++ 	done
++ 	$(INSTALL_DATA) $(srcdir)/LICENSE $(DESTDIR)$(LIBDEST)/LICENSE.txt
++-	PYTHONPATH=$(DESTDIR)$(LIBDEST)  $(RUNSHARED) \
+++	-PYTHONPATH=$(DESTDIR)$(LIBDEST)  $(RUNSHARED) \
++ 		./$(BUILDPYTHON) -Wi -tt $(DESTDIR)$(LIBDEST)/compileall.py \
++ 		-d $(LIBDEST) -f \
++ 		-x 'bad_coding|badsyntax|site-packages' $(DESTDIR)$(LIBDEST)
++-	PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
+++	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
++ 		./$(BUILDPYTHON) -Wi -tt -O $(DESTDIR)$(LIBDEST)/compileall.py \
++ 		-d $(LIBDEST) -f \
++ 		-x 'bad_coding|badsyntax|site-packages' $(DESTDIR)$(LIBDEST)
+Index: serna-free-4-4/3rd/python/2.7.2/_patches/win32/logging.patch
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ serna-free-4-4/3rd/python/2.7.2/_patches/win32/logging.patch	2011-10-29 17:21:11.000000000 +0200
+@@ -0,0 +1,19 @@
++*** Python-2.6.2/Lib/logging/__init__.py.orig	2011-02-24 21:33:40.204758244 +0300
++--- Python-2.6.2/Lib/logging/__init__.py	2011-02-24 21:34:02.945258573 +0300
++***************
++*** 99,105 ****
++  #
++  # If you don't want multiprocessing information in the log, set this to zero
++  #
++! logMultiprocessing = 1
++  
++  #
++  # If you don't want process information in the log, set this to zero
++--- 99,105 ----
++  #
++  # If you don't want multiprocessing information in the log, set this to zero
++  #
++! logMultiprocessing = 0
++  
++  #
++  # If you don't want process information in the log, set this to zero
+Index: serna-free-4-4/3rd/python/2.7.2/_patches/win32/pcbuild.sln.patch
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ serna-free-4-4/3rd/python/2.7.2/_patches/win32/pcbuild.sln.patch	2011-10-29 17:21:11.000000000 +0200
+@@ -0,0 +1,118 @@
++--- Python-2.6.2.old/PCBuild/pcbuild.sln	2008-06-27 06:30:34.000000000 +0400
+++++ Python-2.6.2/PCBuild/pcbuild.sln	2009-05-27 18:07:31.732494400 +0400
++@@ -209,7 +209,6 @@
++ 		{F4229CC3-873C-49AE-9729-DD308ED4CD4A}.Release|x64.ActiveCfg = Release|x64
++ 		{F4229CC3-873C-49AE-9729-DD308ED4CD4A}.Release|x64.Build.0 = Release|x64
++ 		{E9E0A1F6-0009-4E8C-B8F8-1B8F5D49A058}.Debug|Win32.ActiveCfg = Debug|Win32
++-		{E9E0A1F6-0009-4E8C-B8F8-1B8F5D49A058}.Debug|Win32.Build.0 = Debug|Win32
++ 		{E9E0A1F6-0009-4E8C-B8F8-1B8F5D49A058}.Debug|x64.ActiveCfg = Debug|x64
++ 		{E9E0A1F6-0009-4E8C-B8F8-1B8F5D49A058}.Debug|x64.Build.0 = Debug|x64
++ 		{E9E0A1F6-0009-4E8C-B8F8-1B8F5D49A058}.PGInstrument|Win32.ActiveCfg = PGInstrument|Win32
++@@ -221,7 +220,6 @@
++ 		{E9E0A1F6-0009-4E8C-B8F8-1B8F5D49A058}.PGUpdate|x64.ActiveCfg = PGUpdate|x64
++ 		{E9E0A1F6-0009-4E8C-B8F8-1B8F5D49A058}.PGUpdate|x64.Build.0 = PGUpdate|x64
++ 		{E9E0A1F6-0009-4E8C-B8F8-1B8F5D49A058}.Release|Win32.ActiveCfg = Release|Win32
++-		{E9E0A1F6-0009-4E8C-B8F8-1B8F5D49A058}.Release|Win32.Build.0 = Release|Win32
++ 		{E9E0A1F6-0009-4E8C-B8F8-1B8F5D49A058}.Release|x64.ActiveCfg = Release|x64
++ 		{E9E0A1F6-0009-4E8C-B8F8-1B8F5D49A058}.Release|x64.Build.0 = Release|x64
++ 		{C73F0EC1-358B-4177-940F-0846AC8B04CD}.Debug|Win32.ActiveCfg = Release|Win32
++@@ -257,7 +255,6 @@
++ 		{28B5D777-DDF2-4B6B-B34F-31D938813856}.Release|x64.ActiveCfg = Release|x64
++ 		{28B5D777-DDF2-4B6B-B34F-31D938813856}.Release|x64.Build.0 = Release|x64
++ 		{B4D38F3F-68FB-42EC-A45D-E00657BB3627}.Debug|Win32.ActiveCfg = Debug|Win32
++-		{B4D38F3F-68FB-42EC-A45D-E00657BB3627}.Debug|Win32.Build.0 = Debug|Win32
++ 		{B4D38F3F-68FB-42EC-A45D-E00657BB3627}.Debug|x64.ActiveCfg = Debug|x64
++ 		{B4D38F3F-68FB-42EC-A45D-E00657BB3627}.Debug|x64.Build.0 = Debug|x64
++ 		{B4D38F3F-68FB-42EC-A45D-E00657BB3627}.PGInstrument|Win32.ActiveCfg = PGInstrument|Win32
++@@ -269,7 +266,6 @@
++ 		{B4D38F3F-68FB-42EC-A45D-E00657BB3627}.PGUpdate|x64.ActiveCfg = PGUpdate|x64
++ 		{B4D38F3F-68FB-42EC-A45D-E00657BB3627}.PGUpdate|x64.Build.0 = PGUpdate|x64
++ 		{B4D38F3F-68FB-42EC-A45D-E00657BB3627}.Release|Win32.ActiveCfg = Release|Win32
++-		{B4D38F3F-68FB-42EC-A45D-E00657BB3627}.Release|Win32.Build.0 = Release|Win32
++ 		{B4D38F3F-68FB-42EC-A45D-E00657BB3627}.Release|x64.ActiveCfg = Release|x64
++ 		{B4D38F3F-68FB-42EC-A45D-E00657BB3627}.Release|x64.Build.0 = Release|x64
++ 		{0E9791DB-593A-465F-98BC-681011311618}.Debug|Win32.ActiveCfg = Debug|Win32
++@@ -353,7 +349,6 @@
++ 		{86937F53-C189-40EF-8CE8-8759D8E7D480}.Release|x64.ActiveCfg = Release|x64
++ 		{86937F53-C189-40EF-8CE8-8759D8E7D480}.Release|x64.Build.0 = Release|x64
++ 		{13CECB97-4119-4316-9D42-8534019A5A44}.Debug|Win32.ActiveCfg = Debug|Win32
++-		{13CECB97-4119-4316-9D42-8534019A5A44}.Debug|Win32.Build.0 = Debug|Win32
++ 		{13CECB97-4119-4316-9D42-8534019A5A44}.Debug|x64.ActiveCfg = Debug|x64
++ 		{13CECB97-4119-4316-9D42-8534019A5A44}.Debug|x64.Build.0 = Debug|x64
++ 		{13CECB97-4119-4316-9D42-8534019A5A44}.PGInstrument|Win32.ActiveCfg = PGInstrument|Win32
++@@ -365,11 +360,9 @@
++ 		{13CECB97-4119-4316-9D42-8534019A5A44}.PGUpdate|x64.ActiveCfg = PGUpdate|x64
++ 		{13CECB97-4119-4316-9D42-8534019A5A44}.PGUpdate|x64.Build.0 = PGUpdate|x64
++ 		{13CECB97-4119-4316-9D42-8534019A5A44}.Release|Win32.ActiveCfg = Release|Win32
++-		{13CECB97-4119-4316-9D42-8534019A5A44}.Release|Win32.Build.0 = Release|Win32
++ 		{13CECB97-4119-4316-9D42-8534019A5A44}.Release|x64.ActiveCfg = Release|x64
++ 		{13CECB97-4119-4316-9D42-8534019A5A44}.Release|x64.Build.0 = Release|x64
++ 		{C6E20F84-3247-4AD6-B051-B073268F73BA}.Debug|Win32.ActiveCfg = Debug|Win32
++-		{C6E20F84-3247-4AD6-B051-B073268F73BA}.Debug|Win32.Build.0 = Debug|Win32
++ 		{C6E20F84-3247-4AD6-B051-B073268F73BA}.Debug|x64.ActiveCfg = Debug|x64
++ 		{C6E20F84-3247-4AD6-B051-B073268F73BA}.Debug|x64.Build.0 = Debug|x64
++ 		{C6E20F84-3247-4AD6-B051-B073268F73BA}.PGInstrument|Win32.ActiveCfg = PGInstrument|Win32
++@@ -381,7 +374,6 @@
++ 		{C6E20F84-3247-4AD6-B051-B073268F73BA}.PGUpdate|x64.ActiveCfg = PGUpdate|x64
++ 		{C6E20F84-3247-4AD6-B051-B073268F73BA}.PGUpdate|x64.Build.0 = PGUpdate|x64
++ 		{C6E20F84-3247-4AD6-B051-B073268F73BA}.Release|Win32.ActiveCfg = Release|Win32
++-		{C6E20F84-3247-4AD6-B051-B073268F73BA}.Release|Win32.Build.0 = Release|Win32
++ 		{C6E20F84-3247-4AD6-B051-B073268F73BA}.Release|x64.ActiveCfg = Release|x64
++ 		{C6E20F84-3247-4AD6-B051-B073268F73BA}.Release|x64.Build.0 = Release|x64
++ 		{6901D91C-6E48-4BB7-9FEC-700C8131DF1D}.Debug|Win32.ActiveCfg = Debug|Win32
++@@ -401,7 +393,6 @@
++ 		{6901D91C-6E48-4BB7-9FEC-700C8131DF1D}.Release|x64.ActiveCfg = Release|x64
++ 		{6901D91C-6E48-4BB7-9FEC-700C8131DF1D}.Release|x64.Build.0 = Release|x64
++ 		{4946ECAC-2E69-4BF8-A90A-F5136F5094DF}.Debug|Win32.ActiveCfg = Debug|Win32
++-		{4946ECAC-2E69-4BF8-A90A-F5136F5094DF}.Debug|Win32.Build.0 = Debug|Win32
++ 		{4946ECAC-2E69-4BF8-A90A-F5136F5094DF}.Debug|x64.ActiveCfg = Debug|x64
++ 		{4946ECAC-2E69-4BF8-A90A-F5136F5094DF}.Debug|x64.Build.0 = Debug|x64
++ 		{4946ECAC-2E69-4BF8-A90A-F5136F5094DF}.PGInstrument|Win32.ActiveCfg = PGInstrument|Win32
++@@ -413,11 +404,9 @@
++ 		{4946ECAC-2E69-4BF8-A90A-F5136F5094DF}.PGUpdate|x64.ActiveCfg = PGUpdate|x64
++ 		{4946ECAC-2E69-4BF8-A90A-F5136F5094DF}.PGUpdate|x64.Build.0 = PGUpdate|x64
++ 		{4946ECAC-2E69-4BF8-A90A-F5136F5094DF}.Release|Win32.ActiveCfg = Release|Win32
++-		{4946ECAC-2E69-4BF8-A90A-F5136F5094DF}.Release|Win32.Build.0 = Release|Win32
++ 		{4946ECAC-2E69-4BF8-A90A-F5136F5094DF}.Release|x64.ActiveCfg = Release|x64
++ 		{4946ECAC-2E69-4BF8-A90A-F5136F5094DF}.Release|x64.Build.0 = Release|x64
++ 		{73FCD2BD-F133-46B7-8EC1-144CD82A59D5}.Debug|Win32.ActiveCfg = Debug|Win32
++-		{73FCD2BD-F133-46B7-8EC1-144CD82A59D5}.Debug|Win32.Build.0 = Debug|Win32
++ 		{73FCD2BD-F133-46B7-8EC1-144CD82A59D5}.Debug|x64.ActiveCfg = Debug|x64
++ 		{73FCD2BD-F133-46B7-8EC1-144CD82A59D5}.Debug|x64.Build.0 = Debug|x64
++ 		{73FCD2BD-F133-46B7-8EC1-144CD82A59D5}.PGInstrument|Win32.ActiveCfg = PGInstrument|Win32
++@@ -429,7 +418,6 @@
++ 		{73FCD2BD-F133-46B7-8EC1-144CD82A59D5}.PGUpdate|x64.ActiveCfg = PGUpdate|x64
++ 		{73FCD2BD-F133-46B7-8EC1-144CD82A59D5}.PGUpdate|x64.Build.0 = PGUpdate|x64
++ 		{73FCD2BD-F133-46B7-8EC1-144CD82A59D5}.Release|Win32.ActiveCfg = Release|Win32
++-		{73FCD2BD-F133-46B7-8EC1-144CD82A59D5}.Release|Win32.Build.0 = Release|Win32
++ 		{73FCD2BD-F133-46B7-8EC1-144CD82A59D5}.Release|x64.ActiveCfg = Release|x64
++ 		{73FCD2BD-F133-46B7-8EC1-144CD82A59D5}.Release|x64.Build.0 = Release|x64
++ 		{18CAE28C-B454-46C1-87A0-493D91D97F03}.Debug|Win32.ActiveCfg = Debug|Win32
++@@ -489,7 +477,6 @@
++ 		{EB1C19C1-1F18-421E-9735-CAEE69DC6A3C}.Release|Win32.ActiveCfg = Release|Win32
++ 		{EB1C19C1-1F18-421E-9735-CAEE69DC6A3C}.Release|x64.ActiveCfg = Release|x64
++ 		{447F05A8-F581-4CAC-A466-5AC7936E207E}.Debug|Win32.ActiveCfg = Debug|Win32
++-		{447F05A8-F581-4CAC-A466-5AC7936E207E}.Debug|Win32.Build.0 = Debug|Win32
++ 		{447F05A8-F581-4CAC-A466-5AC7936E207E}.Debug|x64.ActiveCfg = Debug|x64
++ 		{447F05A8-F581-4CAC-A466-5AC7936E207E}.Debug|x64.Build.0 = Debug|x64
++ 		{447F05A8-F581-4CAC-A466-5AC7936E207E}.PGInstrument|Win32.ActiveCfg = PGInstrument|Win32
++@@ -501,11 +488,9 @@
++ 		{447F05A8-F581-4CAC-A466-5AC7936E207E}.PGUpdate|x64.ActiveCfg = PGUpdate|x64
++ 		{447F05A8-F581-4CAC-A466-5AC7936E207E}.PGUpdate|x64.Build.0 = PGUpdate|x64
++ 		{447F05A8-F581-4CAC-A466-5AC7936E207E}.Release|Win32.ActiveCfg = Release|Win32
++-		{447F05A8-F581-4CAC-A466-5AC7936E207E}.Release|Win32.Build.0 = Release|Win32
++ 		{447F05A8-F581-4CAC-A466-5AC7936E207E}.Release|x64.ActiveCfg = Release|x64
++ 		{447F05A8-F581-4CAC-A466-5AC7936E207E}.Release|x64.Build.0 = Release|x64
++ 		{A1A295E5-463C-437F-81CA-1F32367685DA}.Debug|Win32.ActiveCfg = Debug|Win32
++-		{A1A295E5-463C-437F-81CA-1F32367685DA}.Debug|Win32.Build.0 = Debug|Win32
++ 		{A1A295E5-463C-437F-81CA-1F32367685DA}.Debug|x64.ActiveCfg = Debug|x64
++ 		{A1A295E5-463C-437F-81CA-1F32367685DA}.Debug|x64.Build.0 = Debug|x64
++ 		{A1A295E5-463C-437F-81CA-1F32367685DA}.PGInstrument|Win32.ActiveCfg = PGInstrument|Win32
++@@ -517,7 +502,6 @@
++ 		{A1A295E5-463C-437F-81CA-1F32367685DA}.PGUpdate|x64.ActiveCfg = PGUpdate|x64
++ 		{A1A295E5-463C-437F-81CA-1F32367685DA}.PGUpdate|x64.Build.0 = PGUpdate|x64
++ 		{A1A295E5-463C-437F-81CA-1F32367685DA}.Release|Win32.ActiveCfg = Release|Win32
++-		{A1A295E5-463C-437F-81CA-1F32367685DA}.Release|Win32.Build.0 = Release|Win32
++ 		{A1A295E5-463C-437F-81CA-1F32367685DA}.Release|x64.ActiveCfg = Release|x64
++ 		{A1A295E5-463C-437F-81CA-1F32367685DA}.Release|x64.Build.0 = Release|x64
++ 		{9E48B300-37D1-11DD-8C41-005056C00008}.Debug|Win32.ActiveCfg = Debug|Win32
+Index: serna-free-4-4/3rd/python/2.7.2/_patches/win32/pcbuild71.sln.patch
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ serna-free-4-4/3rd/python/2.7.2/_patches/win32/pcbuild71.sln.patch	2011-10-29 17:21:11.000000000 +0200
+@@ -0,0 +1,56 @@
++--- Python-2.6.2.orig/PC/VS7.1/pcbuild.sln	2009-07-07 16:30:24.100256400 +0400
+++++ Python-2.6.2/PC/VS7.1/pcbuild.sln	2009-07-07 18:38:56.544113700 +0400
++@@ -113,9 +113,7 @@
++ 	EndGlobalSection
++ 	GlobalSection(ProjectConfiguration) = postSolution
++ 		{E1DBB220-D64B-423D-A545-539A55AA7FE2}.Debug.ActiveCfg = Debug|Win32
++-		{E1DBB220-D64B-423D-A545-539A55AA7FE2}.Debug.Build.0 = Debug|Win32
++ 		{E1DBB220-D64B-423D-A545-539A55AA7FE2}.Release.ActiveCfg = Release|Win32
++-		{E1DBB220-D64B-423D-A545-539A55AA7FE2}.Release.Build.0 = Release|Win32
++ 		{E1DBB220-D64B-423D-A545-539A55AA7FE2}.ReleaseAMD64.ActiveCfg = ReleaseAMD64|Win32
++ 		{E1DBB220-D64B-423D-A545-539A55AA7FE2}.ReleaseAMD64.Build.0 = ReleaseAMD64|Win32
++ 		{E1DBB220-D64B-423D-A545-539A55AA7FE2}.ReleaseItanium.ActiveCfg = ReleaseItanium|Win32
++@@ -129,33 +127,25 @@
++ 		{324F66C2-44D0-4D50-B979-F9DAE7FD36DB}.ReleaseItanium.ActiveCfg = ReleaseItanium|Win32
++ 		{324F66C2-44D0-4D50-B979-F9DAE7FD36DB}.ReleaseItanium.Build.0 = ReleaseItanium|Win32
++ 		{8E85BA54-8A47-4C8B-B72E-8E17579CC6D7}.Debug.ActiveCfg = Debug|Win32
++-		{8E85BA54-8A47-4C8B-B72E-8E17579CC6D7}.Debug.Build.0 = Debug|Win32
++ 		{8E85BA54-8A47-4C8B-B72E-8E17579CC6D7}.Release.ActiveCfg = Release|Win32
++-		{8E85BA54-8A47-4C8B-B72E-8E17579CC6D7}.Release.Build.0 = Release|Win32
++ 		{8E85BA54-8A47-4C8B-B72E-8E17579CC6D7}.ReleaseAMD64.ActiveCfg = ReleaseAMD64|Win32
++ 		{8E85BA54-8A47-4C8B-B72E-8E17579CC6D7}.ReleaseAMD64.Build.0 = ReleaseAMD64|Win32
++ 		{8E85BA54-8A47-4C8B-B72E-8E17579CC6D7}.ReleaseItanium.ActiveCfg = ReleaseItanium|Win32
++ 		{8E85BA54-8A47-4C8B-B72E-8E17579CC6D7}.ReleaseItanium.Build.0 = ReleaseItanium|Win32
++ 		{59CBF474-9E06-4C50-9142-C44A118BB447}.Debug.ActiveCfg = Debug|Win32
++-		{59CBF474-9E06-4C50-9142-C44A118BB447}.Debug.Build.0 = Debug|Win32
++ 		{59CBF474-9E06-4C50-9142-C44A118BB447}.Release.ActiveCfg = Release|Win32
++-		{59CBF474-9E06-4C50-9142-C44A118BB447}.Release.Build.0 = Release|Win32
++ 		{59CBF474-9E06-4C50-9142-C44A118BB447}.ReleaseAMD64.ActiveCfg = ReleaseAMD64|Win32
++ 		{59CBF474-9E06-4C50-9142-C44A118BB447}.ReleaseAMD64.Build.0 = ReleaseAMD64|Win32
++ 		{59CBF474-9E06-4C50-9142-C44A118BB447}.ReleaseItanium.ActiveCfg = ReleaseItanium|Win32
++ 		{59CBF474-9E06-4C50-9142-C44A118BB447}.ReleaseItanium.Build.0 = ReleaseItanium|Win32
++ 		{5B51DFF7-5DC0-41F8-8791-A4AB7114A151}.Debug.ActiveCfg = Debug|Win32
++-		{5B51DFF7-5DC0-41F8-8791-A4AB7114A151}.Debug.Build.0 = Debug|Win32
++ 		{5B51DFF7-5DC0-41F8-8791-A4AB7114A151}.Release.ActiveCfg = Release|Win32
++-		{5B51DFF7-5DC0-41F8-8791-A4AB7114A151}.Release.Build.0 = Release|Win32
++ 		{5B51DFF7-5DC0-41F8-8791-A4AB7114A151}.ReleaseAMD64.ActiveCfg = ReleaseAMD64|Win32
++ 		{5B51DFF7-5DC0-41F8-8791-A4AB7114A151}.ReleaseAMD64.Build.0 = ReleaseAMD64|Win32
++ 		{5B51DFF7-5DC0-41F8-8791-A4AB7114A151}.ReleaseItanium.ActiveCfg = ReleaseItanium|Win32
++ 		{5B51DFF7-5DC0-41F8-8791-A4AB7114A151}.ReleaseItanium.Build.0 = ReleaseItanium|Win32
++ 		{AC557788-6354-43F7-BE05-C9C8C59A344A}.Debug.ActiveCfg = Debug|Win32
++-		{AC557788-6354-43F7-BE05-C9C8C59A344A}.Debug.Build.0 = Debug|Win32
++ 		{AC557788-6354-43F7-BE05-C9C8C59A344A}.Release.ActiveCfg = Release|Win32
++-		{AC557788-6354-43F7-BE05-C9C8C59A344A}.Release.Build.0 = Release|Win32
++ 		{AC557788-6354-43F7-BE05-C9C8C59A344A}.ReleaseAMD64.ActiveCfg = ReleaseAMD64|Win32
++ 		{AC557788-6354-43F7-BE05-C9C8C59A344A}.ReleaseAMD64.Build.0 = ReleaseAMD64|Win32
++ 		{AC557788-6354-43F7-BE05-C9C8C59A344A}.ReleaseItanium.ActiveCfg = ReleaseItanium|Win32
++@@ -269,9 +259,7 @@
++ 		{8CF334D9-4F82-42EB-97AF-83592C5AFD2F}.ReleaseAMD64.Build.0 = ReleaseAMD64|Win32
++ 		{8CF334D9-4F82-42EB-97AF-83592C5AFD2F}.ReleaseItanium.ActiveCfg = ReleaseItanium|Win32
++ 		{2FF0A312-22F9-4C34-B070-842916DE27A9}.Debug.ActiveCfg = Debug|Win32
++-		{2FF0A312-22F9-4C34-B070-842916DE27A9}.Debug.Build.0 = Debug|Win32
++ 		{2FF0A312-22F9-4C34-B070-842916DE27A9}.Release.ActiveCfg = Release|Win32
++-		{2FF0A312-22F9-4C34-B070-842916DE27A9}.Release.Build.0 = Release|Win32
++ 		{2FF0A312-22F9-4C34-B070-842916DE27A9}.ReleaseAMD64.ActiveCfg = ReleaseAMD64|Win32
++ 		{2FF0A312-22F9-4C34-B070-842916DE27A9}.ReleaseAMD64.Build.0 = ReleaseAMD64|Win32
++ 		{2FF0A312-22F9-4C34-B070-842916DE27A9}.ReleaseItanium.ActiveCfg = ReleaseItanium|Win32
+Index: serna-free-4-4/3rd/python/2.7.2/install.bat
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ serna-free-4-4/3rd/python/2.7.2/install.bat	2011-10-29 17:21:11.000000000 +0200
+@@ -0,0 +1,45 @@
++@echo off
++
++set DSTDIR=%THIRD_DIR%
++set PYEXEDIR=%INST_SRCDIR%\PCbuild
++
++for %%C in (%CONFIG%) do (
++    if "%%C" == "static" set TYPE=%%C
++    if "%%C" == "dynamic" set TYPE=%%C
++    if "%%C" == "debug" set DTYPE=%%C
++    if "%%C" == "release" set DTYPE=%%C
++    if "%%C" == "vc2003" set PYEXEDIR=%INST_SRCDIR%\PC\VS7.1
++)
++
++:inst
++
++if "%DTYPE%" == "debug" set NMSFX=_d
++
++echo @set PYTHONHOME=%INST_SRCDIR%> %DSTDIR%\bin\python.bat
++echo @set PATH=%%PATH%%;%THIRD_DIR%\lib;%PYEXEDIR%>> %DSTDIR%\bin\python.bat
++echo @%PYEXEDIR%\python%NMSFX%.exe %%*>> %DSTDIR%\bin\python.bat
++
++rem Needed for sip
++@echo on
++
++xcopy /y /q /r %INST_SRCDIR%\PC\pyconfig.h %INST_SRCDIR%\Include\
++
++mkdir %INST_SRCDIR%\libs
++if "%DTYPE%" == "debug" (
++    copy /y /b %PYEXEDIR%\python26_d.lib %INST_SRCDIR%\libs\python26.lib
++    xcopy /y /q /r %PYEXEDIR%\python26_d.lib %INST_SRCDIR%\libs\
++)
++if "%DTYPE%" == "release" (
++    xcopy /y /q /r %PYEXEDIR%\python26.lib %INST_SRCDIR%\libs\
++)
++
++rem End sip section
++
++xcopy /y /q /e /c /r %INST_SRCDIR%\Include %DSTDIR%\python\Include\
++xcopy /y /q /r %PYEXEDIR%\python26%NMSFX%.lib %DSTDIR%\lib\
++xcopy /y /q /r %PYEXEDIR%\python26%NMSFX%.dll %DSTDIR%\lib\
++xcopy /y /q /r %PYEXEDIR%\*%NMSFX%.pyd %DSTDIR%\python\modules\
++xcopy /y /q /r %INST_SRCDIR%\PC\pyconfig.h %DSTDIR%\python\
++xcopy /y /q /r /i %PYEXEDIR% %INST_SRCDIR%\DLLs
++
++copy %THIRD_DIR%\python\MANIFEST.python %THIRD_DIR%\python\MANIFEST
+Index: serna-free-4-4/3rd/python/2.7.2/install.sh
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ serna-free-4-4/3rd/python/2.7.2/install.sh	2011-10-29 17:21:11.000000000 +0200
+@@ -0,0 +1,97 @@
++#!/bin/sh -x
++
++SRCDIR=$1; shift
++DSTDIR=$1; shift
++RELDIR=$1; shift
++VERSION=$1; shift
++THRSFX=
++
++gmake -C ${SRCDIR} prefix=${DSTDIR}/python/install install
++
++TYPE=static; LIBSFX=a
++
++while [ "x$1" != "x" ]; do
++  case $1 in
++    debug)   DTYPE=debug ;;
++    release) DTYPE=release ;;
++    dynamic) TYPE=dynamic;  LIBSFX=so ;;
++    thread)  THRSFX=-mt ;;
++    *) ;;
++  esac
++  shift
++done
++
++UNAME=`uname -s`
++if [ "$UNAME" = "Darwin" ]; then
++    LIBSFX=dylib
++    LDLP="DYLD_LIBRARY_PATH"
++    EXESFX=.exe
++    SHLIBVER_SFX=
++else
++    LIBSFX=so
++    LDLP="LD_LIBRARY_PATH"
++    EXESFX=
++    SHLIBVER_SFX=.1.0
++fi
++
++. ${THIRD_DIR}/functions
++
++install_wrapper() {
++    PYBINDIR=$1; DST=$2; NAME=$3; SRCNAME=$4
++    cd $DST
++    [ "$SRCNAME" = "" ] && SRCNAME=$NAME
++    if [ -r ${PYBINDIR}/${SRCNAME} ]; then
++	cat << EOF > $NAME
++#!/bin/sh
++THIRD_DIR=${THIRD_DIR}
++$LDLP=$PYBINDIR:\${THIRD_DIR}/lib:\$$LDLP; export $LDLP
++test -z "\${PYTHONHOME}" || unset PYTHONHOME
++$PYBINDIR/${SRCNAME} "\$@"
++EOF
++	chmod 755 $NAME
++    else
++	echo "While in" `pwd`": '${PYTHONHOME}/${SRCNAME}' doesn't exist, exiting..."; exit 1
++    fi
++}
++
++install_file() {
++    SRC=$1; DST=$2; NAME=$3
++    cd $DST
++    if [ -r ${SRC} ]; then
++        symlink ${SRC} ./$NAME
++    else
++        echo "While in" `pwd`": '${SRC}' doesn't exist, exiting..."; exit 1
++    fi
++}
++
++PYTHON=python
++VERSFX=`echo $VERSION | sed -e 's/\..$//'`
++PYINSTDIR=${THIRD_DIR}/python/install
++
++install_wrapper ${PYINSTDIR}/bin ${DSTDIR}/bin python $PYTHON
++install_file ${PYINSTDIR}/include/python${VERSFX}/pyconfig.h ${DSTDIR}/python
++install_file ${PYINSTDIR}/include ${DSTDIR}/python
++symlink ${PYINSTDIR}/include/python${VERSFX}/* ${PYINSTDIR}/include/
++install_file ../${RELDIR}/libpython$VERSFX.a ${DSTDIR}/lib libpython.a
++symlink MANIFEST.python ${THIRD_DIR}/python/MANIFEST
++
++if [ $TYPE = dynamic ]; then
++    case $UNAME in
++        [Dd]arwin)
++            install_file ../${RELDIR}/libpython${VERSFX}.${LIBSFX} ${DSTDIR}/lib
++            symlink libpython${MAJORVER}.${LIBSFX} ${DSTDIR}/lib/libpython${MAJORVER}.${LIBSFX}
++            install_name_tool -id libpython${VERSFX}.${LIBSFX} ${DSTDIR}/lib/libpython${VERSFX}.${LIBSFX}
++            ID="libpython${VERSFX}.${LIBSFX}"
++            INSTLIB="${THIRD_DIR}/python/install/lib/${ID}"
++            chmod u+w ${INSTLIB}
++            install_name_tool -id ${ID} ${INSTLIB}
++            ;;
++        SunOS)
++            install_file ../${RELDIR}/libpython${VERSFX}.${LIBSFX} ${DSTDIR}/lib
++            ;;
++        *)
++            install_file ../${RELDIR}/libpython${VERSFX}.${LIBSFX} ${DSTDIR}/lib
++            install_file ../${RELDIR}/libpython${VERSFX}.${LIBSFX}.* ${DSTDIR}/lib
++            ;;
++    esac
++fi
+Index: serna-free-4-4/3rd/python/TMakefile.pro
+===================================================================
+--- serna-free-4-4.orig/3rd/python/TMakefile.pro	2011-10-29 18:00:53.000000000 +0200
++++ serna-free-4-4/3rd/python/TMakefile.pro	2011-10-29 18:01:02.000000000 +0200
+@@ -7,5 +7,5 @@
+ unix:options += buildtype=configure
+ win32:options += buildtype=make
+ 
+-VERSION	= 2.6.2
++VERSION	= 2.7.2
+ SUBDIRS = $$VERSION
